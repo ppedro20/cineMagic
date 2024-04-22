@@ -54,10 +54,12 @@
         </ul>
     </nav>
     <div class="main">
-        <header>
-            <h1>@yield('header-title')</h1>
+        <header >
+            <h1 >
+                @yield('header-title')
+            </h1>
         </header>
-        <div class="content">
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
             @yield('main')
         </div>
     </div>
