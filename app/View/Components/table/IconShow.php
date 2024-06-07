@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\table;
+namespace App\View\Components\Table;
 
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -13,9 +13,9 @@ class IconShow extends Component
      */
     public function __construct(
         public string $href = '#',
-        ) {
+    ) {
         //
-        }
+    }
 
     /**
      * Get the view / contents that represent the component.

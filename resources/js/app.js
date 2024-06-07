@@ -1,7 +1,7 @@
 import './bootstrap';
 
-import './menu';
+import './menu'
 
 import.meta.glob([
-    '../img/**',
-   ]);
+  '../img/**',
+]);

@@ -1,3 +1,5 @@
 *
 !public/
+!pdf_purchases/
+!ticket_qrcodes/
 !.gitignore

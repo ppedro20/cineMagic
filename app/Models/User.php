@@ -3,9 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -19,8 +19,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-    ];
+        'password'
+        ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,5 +43,14 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getPhotoFullUrlAttribute()
+    {
+        if ($this->photo_url && Storage::exists("public/photos/{$this->photo_url}")) {
+            return asset("storage/photos/{$this->photo_url}");
+        } else {
+            return asset("storage/photos/anonymous.jpg");
+        }
     }
 }
