@@ -53,4 +53,13 @@ class User extends Authenticatable
             return asset("storage/photos/anonymous.jpg");
         }
     }
+
+    public function getTypeDescriptionAttribute()
+    {
+        return match ($this->type) {
+            'A'       => "Administrative",
+            'C'       => "Customer",
+            default => '?'
+        };
+    }
 }
