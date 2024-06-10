@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MovieController;
 use App\Http\Controllers\AdministrativeController;
 
 /* ----- PUBLIC ROUTES ----- */
@@ -52,6 +53,8 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('administratives', AdministrativeController::class);
 
     Route::resource('genres', GenreController::class);
+
+    Route::resource('movies', MovieController::class);
 
     /* CART TODO
     Route::post('cart', [CartController::class, 'confirm'])

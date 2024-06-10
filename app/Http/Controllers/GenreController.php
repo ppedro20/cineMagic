@@ -20,8 +20,7 @@ class GenreController extends \Illuminate\Routing\Controller
 
     public function index(Request $request): View
     {
-        $genresQuery = Genre::orderBy('name')
-            ->orderBy('name');
+        $genresQuery = Genre::orderBy('name');
         $filterByName = $request->query('name');
         if ($filterByName) {
             $genresQuery->where('name', 'like', "%$filterByName%");

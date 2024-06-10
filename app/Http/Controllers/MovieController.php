@@ -6,13 +6,32 @@ use Illuminate\Http\Request;
 use App\Models\Movie;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class MovieController extends Controller
+class MovieController extends \Illuminate\Routing\Controller
 {
-    public function index(): View
+    use AuthorizesRequests;
+
+    public function __construct()
     {
-        $allMovies = Movie::all();
-        return view('movies.index')->with('movies', $allMovies);
+        $this->authorizeResource(Movie::class);
+    }
+
+    public function index(Request $request): View
+    {
+        $moviesQuery = Movie::orderBy('title');
+        $filterByTitle = $request->query('title');
+        if ($filterByTitle) {
+            $moviesQuery->where('title', 'like', "%$filterByTitle%");
+        }
+        $movies = $moviesQuery
+            ->paginate(20)
+            ->withQueryString();
+
+        return view(
+            'movies.index',
+            compact('movies', 'filterByTitle')
+        );
     }
 
     public function create(): View
