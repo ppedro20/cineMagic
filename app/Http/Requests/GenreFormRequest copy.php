@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MovieFormRequest extends FormRequest
+class GenreFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,13 +21,16 @@ class MovieFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'title' => 'required|string|min:2|max:255',
-            'year' => 'required|integer|digits:4|min:1888',
-            'genre_code' => 'required|exists:genres,code',
-            'poster_file' => 'sometimes|image|max:4096',
-            'synopsis' => 'required|string',
-            'trailer_url' => 'nullable|url:http,https'
+        $rules = [
+            'name' => 'required|min:3|max:255|unique:genres,name,'. ($this->genre? $this->code : null).',code'
         ];
+        if (empty($this->genre)) {
+            // This will merge 2 arrays:
+            // (adds the "code" rule to the $rules array)
+            $rules = array_merge($rules, [
+                'code' => 'sometimes|unique:genres,code'
+            ]);
+        }
+        return $rules;
     }
 }

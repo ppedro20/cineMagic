@@ -16,10 +16,11 @@
                     </p>
                 </header>
 
-                <form method="POST" action="{{ route('movies.store') }}">
+                <form method="POST" action="{{ route('movies.store') }}"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="mt-6 space-y-4">
-                        @include('movies.shared.fields', ['mode' => 'create'])
+                        @include('movies.shared.fields', ['mode' => 'edit', 'listGenres' => $listGenres])
                     </div>
                     <div class="flex mt-6">
                         <x-button element="submit" type="dark" text="Save new Movie" class="uppercase"/>
@@ -29,4 +30,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const posterInput = document.getElementById('poster-input');
+        const posterPreview = document.getElementById('poster-preview');
+
+        posterInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    posterPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
 @endsection

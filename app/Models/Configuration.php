@@ -20,5 +20,5 @@ class Configuration extends Model
     ];
 
     protected $table = 'configuration';
-    public $timestamp = false;
+    public $timestamps = false;
 }

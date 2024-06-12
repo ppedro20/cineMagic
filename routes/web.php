@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
 
 /* ----- PUBLIC ROUTES ----- */
@@ -54,8 +55,18 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::resource('genres', GenreController::class);
 
+
+    Route::delete('movies/{movie}/poster', [MovieController::class, 'destroyPoster'])
+        ->name('movies.poster.destroy')
+        ->can('update', 'movie');
+
     Route::resource('movies', MovieController::class);
 
+    Route::get('configurations',[ConfigurationController::class, 'edit'])
+        ->name('configurations.edit');
+
+    Route::put('configurations',[ConfigurationController::class, 'update'])
+        ->name('configurations.update');
     /* CART TODO
     Route::post('cart', [CartController::class, 'confirm'])
         ->name('cart.confirm')

@@ -6,6 +6,11 @@
                     <x-field.input name="title" label="Title" class="grow"
                         value="{{ $title }}"/>
                 </div>
+                <div>
+                    <x-field.select name="genre" label="Genre"
+                        value="{{ $genre }}"
+                        :options="$listGenres"/>
+                </div>
             </div>
             <div class="grow-0 flex flex-col space-y-3 justify-start">
                 <div class="pt-6">

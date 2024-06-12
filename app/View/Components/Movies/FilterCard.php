@@ -8,16 +8,20 @@ use Illuminate\View\Component;
 
 class FilterCard extends Component
 {
+    public array $listGenres;
+
     /**
      * Create a new component instance.
      */
     public function __construct(
+        public array $genres,
         public string $filterAction,
         public string $resetUrl,
         public ?string $title = null,
+        public ?string $genre = null,
     )
     {
-        //
+        $this->listGenres = (array_merge([null => 'Any genre'], $genres));
     }
 
     /**

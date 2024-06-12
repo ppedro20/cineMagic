@@ -2,18 +2,17 @@
     <table class="table-auto border-collapse w-full">
         <thead>
             <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
-                <th class="px-2 py-2 text-left hidden lg:table-cell">Id</th>
-                <th class="px-2 py-2 text-left">Title</th>
+                <th class="px-2 py-2 text-left hidden lg:table-cell">Title</th>
                 @isset($showGenre)
                     @if ($showGenre)
-                        <th class="px-2 py-2 text-left">Genre Code</th>
+                        <th class="px-2 py-2 text-left">Genre</th>
                     @endif
                 @endisset
-
                 <th class="px-2 py-2 text-left">Year</th>
                 <th class="px-2 py-2 text-left">Poster Filename</th>
                 <th class="px-2 py-2 text-left">Synopsis</th>
                 <th class="px-2 py-2 text-left">Trailer Url</th>
+
                 @isset($showView)
                     @if ($showView)
                         <th></th>
@@ -34,17 +33,16 @@
         <tbody>
             @foreach ($movies as $movie)
                 <tr class="border-b border-b-gray-400 dark:border-b-gray-500">
-                    <td class="px-2 py-2 text-left hidden lg:table-cell">{{ $movie->id}}</td>
                     <td class="px-2 py-2 text-left">{{ $movie->title }}</td>
                     @isset($showGenre)
                         @if ($showGenre)
-                            <td class="px-2 py-2 text-left">{{ $movie->genre_code }}</td>
+                            <td class="px-2 py-2 text-left">{{ $movie->genre()->name }}</td>
                         @endif
                     @endisset
                     <td class="px-2 py-2 text-left">{{ $movie->year }}</td>
-                    <td class="px-2 py-2 text-left">{{ $movie->poster_filename }}</td>
+                    <td class="px-2 py-2 text-left"><img src="{{ $movie->posterFullUrl }}" width="67" height="100" alt="Photo Movie" /></td>
                     <td class="px-2 py-2 text-left">{{ $movie->synopsis }}</td>
-                    <td class="px-2 py-2 text-left">{{ $movie->trailer_url }}</td>
+                    <td class="px-2 py-2 text-left"><a class="no-underline hover:underline" href="{{ $movie->trailer_url }}">{{ $movie->trailer_url }}</a></td>
                     @isset($showView)
                         @if ($showView)
                             <td>

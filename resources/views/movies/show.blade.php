@@ -37,9 +37,9 @@
                     </h2>
                 </header>
                 <div class="mt-6 space-y-4">
-                    @include('movies.shared.fields', ['mode' => 'show'])
+                    @include('movies.shared.fields', ['mode' => 'show', 'listGenres' => $movie->genre()->pluck('name', 'code')->toArray()])
                 </div>
-                 <!-- TODO @ can('viewAny', App\Models\Movie::class)  -->
+                 <!-- TODO @ can('viewAny', App\Models\Screeing::class) -->
             </section>
         </div>
     </div>

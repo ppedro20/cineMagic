@@ -44,7 +44,6 @@
                     Movies
                 </h3>
                 <x-movies.table :movies="$genre->movies"
-                    :showGenre="false"
                     :showView="true"
                     :showEdit="false"
                     :showDelete="false"

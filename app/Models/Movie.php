@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Genre;
 use App\Models\Screening;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,7 +37,7 @@ class Movie extends Model
      */
     public function genre(): BelongsTo
     {
-        return $this->belongsTo(Genre::class, 'code', 'genre_code');
+        return $this->belongsTo(Genre::class, 'genre_code', 'code');
     }
 
     /**
@@ -47,5 +48,14 @@ class Movie extends Model
     public function screenings(): HasMany
     {
         return $this->hasMany(Screening::class);
+    }
+
+    public function getPosterFullUrlAttribute()
+    {
+        if ($this->poster_filename && Storage::exists("public/posters/{$this->poster_filename}")) {
+            return asset("storage/posters/{$this->poster_filename}");
+        } else {
+            return asset("storage/posters/_no_poster_2.png");
+        }
     }
 }

@@ -9,6 +9,8 @@
             <x-movies.filter-card
                 :filterAction="route('movies.index')"
                 :resetUrl="route('movies.index')"
+                :genres="$listGenres"
+                :genre="old('genre', $filterByGenre)"
                 :name="old('name', $filterByTitle)"
                 class="mb-6"
                 />
@@ -22,6 +24,7 @@
             @endcan
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">
                 <x-movies.table :movies="$movies"
+                    :showGenre="true"
                     :showView="true"
                     :showEdit="true"
                     :showDelete="true"

@@ -65,13 +65,16 @@
             {{ $text }}
         </a>
     @else
-        <button type="{{ $element }}" {{ $buttonName ? "name='$buttonName'" : '' }}
-            class="px-4 py-2 inline-block border border-transparent rounded-md
-                    font-medium text-sm tracking-widest
-                    focus:outline-none focus:ring-2
-                    focus:ring-indigo-500 dark:focus:ring-indigo-400
-                    focus:ring-offset-2 transition ease-in-out duration-150 {{ $colors }}">
-            {{ $text }}
-        </button>
+    <button type="{{ $element }}" {{ $buttonName ? "name='$buttonName'" : '' }}
+        @if(($element == 'submit') && ($attributes->has('form')))
+            {{ $attributes->merge(['form' => '#']) }}
+        @endif
+        class="px-4 py-2 inline-block border border-transparent rounded-md
+                font-medium text-sm tracking-widest
+                focus:outline-none focus:ring-2
+                focus:ring-indigo-500 dark:focus:ring-indigo-400
+                focus:ring-offset-2 transition ease-in-out duration-150 {{ $colors }}">
+        {{ $text }}
+    </button>
     @endif
 </div>

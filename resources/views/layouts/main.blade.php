@@ -36,14 +36,14 @@
                     <div id="menu-container"
                         class="grow flex flex-col sm:flex-row items-stretch
                     invisible h-0 sm:visible sm:h-auto">
+                        <!-- Menu Item: Screenigs -->
+                        <x-menus.menu-item content="Screenings" href="#" selected="" />
+
                         <!-- Menu Item: Movies -->
                         <x-menus.menu-item content="Movies" href="#" selected="" />
 
                         <!-- Menu Item: Genres -->
                         <x-menus.menu-item content="Genres" href="#" selected="" />
-
-                        <!-- Menu Item: Screenigs -->
-                        <x-menus.menu-item content="Screenings" href="#" selected="" />
 
                         <div class="grow"></div>
 
