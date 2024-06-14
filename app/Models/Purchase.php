@@ -49,4 +49,17 @@ class Purchase extends Model
     {
         return $this->hasMany(Ticket::class);
     }
+
+    public function getReciept(Purchase $purchase){
+		if ($purchase->receipt_pdf_filename)
+			return Storage::response('pdf_purchase/'.$purchase->receipt_pdf_filename);
+		return null
+	}
+
+	public function getRecieptFullUrlAttribute(){
+		if ($this->receipt_pdf_filename && Storage::exists("pdf_purchases/{$this->receipt_pdf_filename}")){
+			return route('purchase.receipt');
+		}
+		return null;
+	}
 }

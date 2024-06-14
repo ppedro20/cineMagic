@@ -2,10 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Spatie\FlareClient\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class TicketController extends Controller
+class TicketController extends \Illuminate\Routing\Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(Ticket::class);
+    }
+
     public function index(Request $request): View
     {
         $tickets = Ticket::query()

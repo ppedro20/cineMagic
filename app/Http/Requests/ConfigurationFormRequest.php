@@ -22,7 +22,7 @@ class ConfigurationFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ticket_price' => 'required|numeric|min:0',
+            'ticket_price' => 'required|numeric|gt:0',
 		    'registered_customer_ticket_discount' => 'required|numeric|min:0|lt:ticket_price'
         ];
     }
