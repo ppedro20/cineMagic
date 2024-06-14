@@ -162,7 +162,7 @@
                             </svg>
                         </x-menus.admin-group-menu-items>
                     @endcan
-                    @endif
+                    
                 @endauth
                     <!-- Only one option -->
                     <x-menus.admin-group-menu-items class="mt-2" title="Voltar ao site" :options="['Home' => route('home')]">
