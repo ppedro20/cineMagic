@@ -8,32 +8,23 @@ class AdministrativePolicy
 {
     public function before(?User $user, string $ability): bool|null
     {
-        return null;
-
-        /*TODO
         if ($ability == 'updateAdmin') {
             return null;
         }
         if ($user?->admin) {
             return true;
         }
-        return null; */
+        return null;
     }
 
     public function viewAny(User $user): bool
     {
-        return true;
-
-        /*TODO
-        return $user->type == 'A';*/
+        return $user->type == 'A';
     }
 
     public function view(User $user, User $administrative): bool
     {
-        return true;
-
-        /*TODO
-        return $user->type == 'A';*/
+        return $user->type == 'A';
     }
 
     public function create(User $user): bool
@@ -46,35 +37,25 @@ class AdministrativePolicy
 
     public function update(User $user, User $administrative): bool
     {
-        return true;
-
-        /*TODO
-        return $user->type == 'A' && $user->id == $administrative->id;*/
+        return $user->type == 'A' && $user->id == $administrative->id;
     }
 
     public function createAdmin(User $user): bool
     {
-        return true;
-
-        /*TODO
-        return $user->admin;*/
+        return $user->admin;
     }
 
     public function updateAdmin(User $user, User $administrative): bool
     {
-        return true;
-
-        /*TODO
         // Only update if is admin and not himself
-        return $user->admin && $user->id != $administrative->id;*/
+        return $user->admin && $user->id != $administrative->id;
     }
 
     public function delete(User $user, User $administrative): bool
     {
         return true;
 
-        /*TODO
-        return false;*/
+
     }
 
 }

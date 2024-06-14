@@ -40,16 +40,15 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth', 'verified')->group(function () {
 
 
-    // CHECK THIS -------- -------- -------- --------
-        /* ----- Non-Verified users ----- */
-        // Route::middleware('auth')->group(function () {
-        //     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-        // });
-    // CHECK THIS -------- -------- -------- --------
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+       })->middleware(['auth', 'verified'])->name('dashboard');
 
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
 
     Route::delete('administratives/{administrative}/photo', [AdministrativeController::class, 'destroyPhoto'])
     ->name('administratives.photo.destroy')

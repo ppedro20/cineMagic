@@ -47,4 +47,8 @@ class Customer extends Model
     {
         return $this->belongsTo(User::class, 'id', 'id');
     }
+
+    public function tickets(){
+        return $this -> hasMany(Bilhete:: class, 'customer_id');
+    }
 }
