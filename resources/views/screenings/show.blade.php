@@ -1,6 +1,6 @@
-@extends(Auth::user() ? 'layouts.admin':'layouts.main')
+@extends('layouts.admin')
 
-@section('header-title', $movie->title)
+@section('header-title', 'Screening of '.$screening->movie->title)
 
 @section('main')
 <div class="flex flex-col space-y-6">
@@ -8,20 +8,20 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
-                    @can('create', App\Models\Movie::class)
+                    @can('create', App\Models\Screening::class)
                         <x-button
-                            href="{{ route('movies.create') }}"
+                            href="{{ route('screenings.create') }}"
                             text="New"
                             type="success"/>
                     @endcan
-                    @can('update', $movie)
+                    @can('update', $screening)
                         <x-button
-                            href="{{ route('movies.edit', ['movie' => $movie]) }}"
+                            href="{{ route('screenings.edit', ['screening' => $screening]) }}"
                             text="Edit"
                             type="primary"/>
                     @endcan
-                    @can('delete', $movie)
-                        <form method="POST" action="{{ route('movies.destroy', ['movie' => $movie]) }}">
+                    @can('delete', $screening)
+                        <form method="POST" action="{{ route('screenings.destroy', ['screening' => $screening]) }}">
                             @csrf
                             @method('DELETE')
                             <x-button
@@ -33,13 +33,19 @@
                 </div>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Movie "{{ $movie->title }}"
+                        Screening of "{{ $screening->movie->title }}"
                     </h2>
                 </header>
                 <div class="mt-6 space-y-4">
-                    @include('movies.shared.fields', ['mode' => 'show', 'listGenres' => $movie->genre->pluck('name', 'code')->toArray()])
+                    @include('screenings.shared.fields',['mode' => 'show', 'listTheaters' => $screening->theater->pluck('name', 'id')->toArray(), 'listMovies' => $screening->movie->pluck('title', 'id')->toArray()])
                 </div>
-                 <!-- TODO @ can('viewAny', App\Models\Screeing::class) -->
+                <x-seats.table :seats="$screening->theater->seats"
+                    :showView="true"
+                    :showEdit="false"
+                    :showDelete="false"
+                    class="pt-4"
+                    />
+
             </section>
         </div>
     </div>

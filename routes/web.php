@@ -5,6 +5,7 @@ use App\Http\Controllers\SeatController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TheaterController;
+use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
 
@@ -70,7 +71,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/seats/create/{theaterId}', [SeatController::class, 'create'])
         ->name('seats.create');
 
-    Route::resource('seats', SeatController::class)->except(['create']);;
+    Route::resource('seats', SeatController::class)->except(['create']);
+
+    Route::resource('screenings', ScreeningController::class);
 
     Route::get('configurations',[ConfigurationController::class, 'edit'])
         ->name('configurations.edit');

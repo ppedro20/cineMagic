@@ -1,19 +1,23 @@
 <?php
 
-namespace App\View\Components\Seats;
+namespace App\View\Components\Screenings;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class IconShow extends Component
+class Table extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public string $href = '#',
-    ) {
+        public object $screenings,
+        public bool $showView = true,
+        public bool $showEdit = true,
+        public bool $showDelete = true,
+    )
+    {
         //
     }
 
@@ -22,6 +26,6 @@ class IconShow extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.seats.icon-show');
+        return view('components.screenings.table');
     }
 }
