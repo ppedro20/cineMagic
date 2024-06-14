@@ -39,7 +39,9 @@
                 <div class="mt-6 space-y-4">
                     @include('screenings.shared.fields',['mode' => 'show', 'listTheaters' => $screening->theater->pluck('name', 'id')->toArray(), 'listMovies' => $screening->movie->pluck('title', 'id')->toArray()])
                 </div>
-                <x-seats.table :seats="$screening->theater->seats"
+                <x-seats.table-reserved
+                    :seats="$screening->theater->seats"
+                    :screeningId="$screening->id"
                     :showView="true"
                     :showEdit="false"
                     :showDelete="false"

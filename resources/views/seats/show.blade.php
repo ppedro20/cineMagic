@@ -1,6 +1,6 @@
 @extends(Auth::user() ? 'layouts.admin':'layouts.main')
 
-@section('header-title', $seat->row.$seat->seat_number)
+@section('header-title', $seat->name)
 
 @section('main')
 <div class="flex flex-col space-y-6">
@@ -33,7 +33,7 @@
                 </div>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        seat "{{ $seat->row.$seat->seat_number }}"
+                        Seat "{{ $seat->name }}"
                     </h2>
                 </header>
                 <div class="mt-6 space-y-4">

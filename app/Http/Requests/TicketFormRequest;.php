@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GenreFormRequest extends FormRequest
+class TicketFormRequest; extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -21,14 +21,13 @@ class GenreFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'name' => 'required|min:3|max:255|unique:genres,name,'. ($this->genre? $this->code : null).',code'
+        return [
+            'seat_id' => 'required|exists:seats,id',
+            'screening_id' => 'required|exists:screenings,id',
+            'purchase_id' => 'required|exists:purchases,id',
+            'price' => 'required|numeric|min:0',
+            'qrcode_url' => 'nullable|url',
+            'status' => 'required|in:valid,invalid',
         ];
-        if (empty($this->genre)) {
-            $rules = array_merge($rules, [
-                'code' => 'sometimes|unique:genres,code'
-            ]);
-        }
-        return $rules;
     }
 }

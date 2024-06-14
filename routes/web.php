@@ -77,6 +77,10 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::resource('screenings', ScreeningController::class);
 
+    //TODO
+    //Route::get('tickets',[ConfigurationController::class, 'index']);
+    //Route::get('tickets',[ConfigurationController::class, 'show']);
+
     Route::get('configurations',[ConfigurationController::class, 'edit'])
         ->name('configurations.edit');
 
