@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/password', [ProfileController::class, 'editPassword'])->name('profile.edit.password');
 });
 
+
+
 /* ----- Verified users ----- */
 Route::middleware('auth', 'verified')->group(function () {
 

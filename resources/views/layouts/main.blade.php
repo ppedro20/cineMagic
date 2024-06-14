@@ -40,7 +40,7 @@
                         <x-menus.menu-item content="Screenings" href="#" selected="" />
 
                         <!-- Menu Item: Movies -->
-                        <x-menus.menu-item content="Movies" href="#" selected="" />
+                        <x-menus.menu-item content="Movies" :href="route('movies.index')" selected="" />
 
                         <!-- Menu Item: Genres -->
                         <x-menus.menu-item content="Genres" href="#" selected="" />
@@ -68,8 +68,10 @@
                                         {{ Auth::user()->name }}
                                     </div>
                                 </x-slot>
+                                @if(auth()->user()->getTypeDescriptionAttribute() == 'Administrative')
                                 <x-menus.submenu-item content="Área de administração" selectable="0"
                                     href="{{ route('dashboard') }}" />
+                                @endif
                                 @can('viewMy', App\Models\Discipline::class)
                                     <!-- TODO -->
                                     <x-menus.submenu-item content="My Disciplines" selectable="0"

@@ -15,6 +15,8 @@ class Seat extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $table = 'seats';
+
     protected $fillable = [
         'theater_id',
         'row',
@@ -29,7 +31,7 @@ class Seat extends Model
      */
     public function theater(): BelongsTo
     {
-        return $this->belongsTo(Theater::class)->withTrashed();
+        return $this->belongsTo(Theater::class, 'theater_id')->withTrashed();
     }
 
     /**
@@ -39,6 +41,21 @@ class Seat extends Model
      */
     public function tickets(): HasMany
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class, 'seat_id');
     }
+
+    public function isReserved($screening_id)
+    {
+        return $this->tickets()->where('screening_id', $screening_id)->count() > 0;
+    }
+
+    public static function seatsPerRow($seats)
+    {
+        $seatsPerRow = [];
+        foreach ($seats as $seat) {
+            $seatsPerRow[$seat->row][] = $seat;
+        }
+        return $seatsPerRow;
+    }
+
 }

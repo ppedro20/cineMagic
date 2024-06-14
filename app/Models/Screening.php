@@ -14,11 +14,8 @@ class Screening extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    protected $table = 'screenings';
+
     protected $fillable = [
         'movie_id',
         'theater_id',
@@ -33,7 +30,7 @@ class Screening extends Model
      */
     public function tickets(): HasMany
     {
-        return $this->hasMany(Ticket::class);
+        return $this->hasMany(Ticket::class, 'screening_id');
     }
 
 
@@ -44,7 +41,7 @@ class Screening extends Model
      */
     public function theater(): BelongsTo
     {
-        return $this->belongsTo(Theater::class)->withTrashed();
+        return $this->belongsTo(Theater::class, 'theater_id')->withTrashed();
     }
 
     /**
@@ -54,6 +51,6 @@ class Screening extends Model
      */
     public function movie(): BelongsTo
     {
-        return $this->belongsTo(Movie::class)->withTrashed();
+        return $this->belongsTo(Movie::class, 'movie_id')->withTrashed();
     }
 }
