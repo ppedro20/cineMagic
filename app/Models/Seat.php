@@ -21,6 +21,7 @@ class Seat extends Model
         'seat_number'
     ];
 
+    public $timestamps=false;
     /**
      * Get the theater that owns the Seat
      *
@@ -28,7 +29,7 @@ class Seat extends Model
      */
     public function theater(): BelongsTo
     {
-        return $this->belongsTo(Theather::class)->withTrashed();
+        return $this->belongsTo(Theater::class)->withTrashed();
     }
 
     /**

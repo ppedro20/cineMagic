@@ -15,8 +15,7 @@ class Theater extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'photo_filename'
+        'name'
     ];
 
     public $timestamps = false;
@@ -41,4 +40,11 @@ class Theater extends Model
         return $this->hasMany(Screening::class);
     }
 
+    public function getRowsAttribute(){
+		return $this->steats()->orderby('row')->pluck('row')->unique();
+	}
+
+	public function seatsRow($row){
+		return $this->steats()->where('row', $row)->orderby('seat_number')->get();
+	}
 }

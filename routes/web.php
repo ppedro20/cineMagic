@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SeatController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
 
@@ -61,6 +63,14 @@ Route::middleware('auth', 'verified')->group(function () {
         ->can('update', 'movie');
 
     Route::resource('movies', MovieController::class);
+
+
+    Route::resource('theaters', TheaterController::class);
+
+    Route::get('/seats/create/{theaterId}', [SeatController::class, 'create'])
+        ->name('seats.create');
+
+    Route::resource('seats', SeatController::class)->except(['create']);;
 
     Route::get('configurations',[ConfigurationController::class, 'edit'])
         ->name('configurations.edit');
