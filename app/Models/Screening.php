@@ -74,4 +74,12 @@ class Screening extends Model
             return false;
         });
     }
+
+    public function occupation(): array
+    {
+        $totalSeats = $this->theater->seats()->count();
+        $reservedSeats = $this->tickets()->count();
+
+        return [$reservedSeats, $totalSeats];
+    }
 }

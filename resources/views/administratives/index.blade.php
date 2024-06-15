@@ -9,7 +9,7 @@
             <x-administratives.filter-card
                 :filterAction="route('administratives.index')"
                 :resetUrl="route('administratives.index')"
-                :name="old('name', $filterByName)"
+                :name="$filterByName"
                 class="mb-6"
                 />
             @can('create', App\Models\User::class)

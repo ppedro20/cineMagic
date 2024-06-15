@@ -10,7 +10,7 @@
                 :rows="$listRows"
                 :filterAction="route('seats.index')"
                 :resetUrl="route('seats.index')"
-                :row="old('row', $filterByRow)"
+                :row="$filterByRow"
                 class="mb-6"
                 />
             @can('create', App\Models\Seat::class)

@@ -9,14 +9,15 @@
             <x-screenings.filter-card
                 :filterAction="route('screenings.showscreenings')"
                 :resetUrl="route('screenings.showscreenings')"
-                :movie="old('movie', $filterByMovie)"
-                :theater="old('movie', $filterByTheater)"
-                :before="old('before', $filterByBefore)"
-                :after="old('after', $filterByAfter)"
+                :movie="$filterByMovie"
+                :theater="$filterByTheater"
+                :before="$filterByBefore"
+                :after="$filterByAfter"
                 class="mb-6"
                 />
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">
                 <x-screenings.table :screenings="$screenings"
+                    :showMovie="true"
                     :showView="true"
                     :showEdit="false"
                     :showDelete="false"

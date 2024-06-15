@@ -13,27 +13,28 @@ use App\Http\Controllers\AdministrativeController;
 /* ----- PUBLIC ROUTES ----- */
 Route::view('/', 'home')->name('home');
 
+// Movies
+Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
+    ->name('movies.showmovies');
+Route::resource('movies', MovieController::class)->only(['show']);
 
-// Use Cart routes should be accessible to the public
-Route::middleware('can:use-cart')->group(function () {
+// Screenings
+Route::get('screenings/showscreenings', [ScreeningController::class, 'showScreenings'])
+    ->name('screenings.showscreenings');
+Route::resource('screenings', ScreeningController::class)->only(['show']);
 
-});
-// --- TESTING ---
-// Add a discipline to the cart:
+
+// Cart
 Route::post('cart/{screening}/{seat}', [CartController::class, 'addToCart'])
     ->name('cart.add');
-
-// Remove a discipline from the cart:
 Route::delete('cart/{screening}/{seat}', [CartController::class, 'removeFromCart'])
     ->name('cart.remove');
-// Show the cart:
 Route::get('cart', [CartController::class, 'show'])->name('cart.show');
-// Clear the cart:
 Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
-// Confirm Cart
 Route::post('cart', [CartController::class, 'confirm'])
         ->name('cart.confirm');
-// --- ------- ---
+
+/* ----- ------ ------ ----- */
 
 
 /* ----- Non-Verified users ----- */
@@ -71,11 +72,9 @@ Route::middleware('auth', 'verified')->group(function () {
         ->name('movies.poster.destroy')
         ->can('update', 'movie');
 
-        Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
-        ->name('movies.showmovies');
+    Route::resource('movies', MovieController::class)->except(['show']);
 
-    Route::resource('movies', MovieController::class);
-
+    Route::resource('screenings', ScreeningController::class)->except(['show']);
 
     Route::resource('theaters', TheaterController::class);
 
@@ -84,10 +83,8 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::resource('seats', SeatController::class)->except(['create']);
 
-    Route::get('screenings/showscreenings', [ScreeningController::class, 'showScreenings'])
-        ->name('screenings.showscreenings');
 
-    Route::resource('screenings', ScreeningController::class);
+
 
 
     //TODO

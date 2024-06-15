@@ -46,12 +46,9 @@
                     @isset($showView)
                         @if ($showView)
                             <td>
-                                @can('view', $movie)
-                                    <x-table.icon-show class="ps-3 px-0.5"
-                                        href="{{ route('movies.show', ['movie' => $movie]) }}" />
-                                @else
-                                    <x-table.icon-show class="ps-3 px-0.5" :enabled="false" />
-                                @endcan
+                                <x-table.icon-show class="ps-3 px-0.5"
+                                    href="{{ route('movies.show', ['movie' => $movie]) }}" />
+
                             </td>
                         @endif
                     @endisset

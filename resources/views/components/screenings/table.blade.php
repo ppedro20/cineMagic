@@ -1,3 +1,5 @@
+
+
 <div>
     <table class="table-auto border-collapse w-full">
         <thead>
@@ -10,6 +12,7 @@
                 <th class="px-2 py-2 text-left">Theater</th>
                 <th class="px-2 py-2 text-left">Date</th>
                 <th class="px-2 py-2 text-left">Starts at</th>
+                <td class="px-2 py-2 text-left">Occupation</td>
                 @isset($showView)
                     @if ($showView)
                         <th></th>
@@ -29,6 +32,11 @@
         </thead>
         <tbody>
             @foreach ($screenings as $screening)
+                @php
+                    $occupation = $screening->occupation();
+                    $reservedSeats = $occupation[0];
+                    $totalSeats = $occupation[1];
+                @endphp
                 <tr class="border-b border-b-gray-400 dark:border-b-gray-500">
                     @isset($showMovie)
                         @if ($showMovie)
@@ -38,6 +46,7 @@
                     <td class="px-2 py-2 text-left">{{ $screening->theater->name }}</td>
                     <td class="px-2 py-2 text-left">{{ $screening->date }}</td>
                     <td class="px-2 py-2 text-left">{{ \Carbon\Carbon::parse($screening->start_time)->format('H:i') }}</td>
+                    <td class="px-2 py-2 text-left">{{ $reservedSeats.'/'.$totalSeats }}</td>
                     @isset($showView)
 
                             <td>

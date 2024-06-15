@@ -10,8 +10,8 @@
                 :filterAction="route('movies.index')"
                 :resetUrl="route('movies.index')"
                 :genres="$listGenres"
-                :genre="old('genre', $filterByGenre)"
-                :name="old('name', $filterByTitle)"
+                :genre="$filterByGenre"
+                :keyword="$filterByKeyword"
                 class="mb-6"
                 />
             @if(auth()->user()->getTypeDescriptionAttribute() == 'Administrative')

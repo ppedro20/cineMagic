@@ -25,9 +25,13 @@ class MovieController extends \Illuminate\Routing\Controller
     public function index(Request $request): View
     {
         $moviesQuery = Movie::orderBy('title');
-        $filterByTitle = $request->query('title');
-        if ($filterByTitle) {
-            $moviesQuery->where('title', 'like', "%$filterByTitle%");
+
+        $filterByKeyword = $request->query('keyword');
+        if ($filterByKeyword) {
+            $moviesQuery->where(function ($query) use ($filterByKeyword) {
+                $query->where('title', 'like', "%$filterByKeyword%")
+                    ->orWhere('synopsis', 'like', "%$filterByKeyword%");
+            });
         }
         $filterByGenre = $request->query('genre');
         if ($filterByGenre) {
@@ -43,7 +47,7 @@ class MovieController extends \Illuminate\Routing\Controller
 
         return view(
             'movies.index',
-            compact('movies', 'listGenres', 'filterByTitle', 'filterByGenre')
+            compact('movies', 'listGenres', 'filterByKeyword', 'filterByGenre')
         );
     }
 
@@ -51,26 +55,25 @@ class MovieController extends \Illuminate\Routing\Controller
     {
         $moviesQuery = Movie::orderBy('title');
 
-        $currentDate = Carbon::now();
-        $currentTime = $currentDate->subMinutes(5)->format('H:i:s');
-        $moviesQuery = $moviesQuery->whereHas('screenings', function($query) use ($currentDate, $currentTime) {
+        $currentDate = Carbon::today()->toDateString();
+        $currentTime = Carbon::now()->subMinutes(5)->format('H:i');
+        $endDate = Carbon::now()->addWeeks(2)->toDateString();
+
+        $moviesQuery = $moviesQuery->whereHas('screenings', function($query) use ($currentDate, $currentTime, $endDate) {
             $query->where('date', '>', $currentDate)
+                ->where('date', '<=', $endDate)
                 ->orWhere(function($query) use ($currentDate, $currentTime) {
                     $query->where('date', '=', $currentDate)
                         ->where('start_time', '>=', $currentTime);
                 });
-        });;
+        });
 
-
-        $filterByMovie = $request->query('movie');
-        if ($filterByMovie) {
-            $moviesQuery->where('title', 'like', "%$filterByTitle%");
-        }
-
-
-        $filterByTitle = $request->query('title');
-        if ($filterByTitle) {
-            $moviesQuery->where('title', 'like', "%$filterByTitle%");
+        $filterByKeyword = $request->query('keyword');
+        if ($filterByKeyword) {
+            $moviesQuery->where(function ($query) use ($filterByKeyword) {
+                $query->where('title', 'like', "%$filterByKeyword%")
+                    ->orWhere('synopsis', 'like', "%$filterByKeyword%");
+            });
         }
         $filterByGenre = $request->query('genre');
         if ($filterByGenre) {
@@ -93,7 +96,7 @@ class MovieController extends \Illuminate\Routing\Controller
 
         return view(
             'movies.showmovies',
-            compact('movies', 'listGenres', 'filterByTitle', 'filterByGenre')
+            compact('movies', 'listGenres', 'filterByKeyword', 'filterByGenre')
         );
     }
 
@@ -101,17 +104,19 @@ class MovieController extends \Illuminate\Routing\Controller
     public function show(Movie $movie): View
     {
         // Get the current date and time
-        $currentDate = Carbon::now()->toDateString();
-        $currentTime = Carbon::now()->toTimeString();
+        $currentDate = Carbon::today()->toDateString();
+        $currentTime = Carbon::now()->subMinutes(5)->format('H:i');
+        $endDate = Carbon::now()->addWeeks(2)->toDateString();
 
         // Get screenings following the specified logic
         $screenings = $movie->screenings()
-            ->where(function ($query) use ($currentDate, $currentTime) {
+            ->where( function($query) use ($currentDate, $currentTime, $endDate) {
                 $query->where('date', '>', $currentDate)
-                    ->orWhere(function ($query) use ($currentDate, $currentTime) {
-                        $query->where('date', '=', $currentDate)
-                            ->where('start_time', '>=', $currentTime);
-                    });
+                    ->where('date', '<=', $endDate)
+                    ->orWhere(function($query) use ($currentDate, $currentTime) {
+                    $query->where('date', '=', $currentDate)
+                        ->where('start_time', '>=', $currentTime);
+                });
             })
             ->get();
         return view('movies.show', compact('movie', 'screenings'));

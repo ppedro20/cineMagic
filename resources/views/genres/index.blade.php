@@ -9,7 +9,7 @@
             <x-genres.filter-card
                 :filterAction="route('genres.index')"
                 :resetUrl="route('genres.index')"
-                :name="old('name', $filterByName)"
+                :name="$filterByName"
                 class="mb-6"
                 />
             @can('create', App\Models\Genre::class)

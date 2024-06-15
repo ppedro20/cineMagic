@@ -3,8 +3,8 @@
         <div class="flex justify-between space-x-3">
             <div class="grow flex flex-col space-y-2">
                 <div>
-                    <x-field.input name="title" label="Title" class="grow"
-                        value="{{ $title }}"/>
+                    <x-field.input name="keyword" label="Search" class="grow"
+                        value="{{ $keyword }}"/>
                 </div>
                 <div>
                     <x-field.select name="genre" label="Genre"

@@ -10,8 +10,8 @@
                 :filterAction="route('movies.showmovies')"
                 :resetUrl="route('movies.showmovies')"
                 :genres="$listGenres"
-                :genre="old('genre', $filterByGenre)"
-                :name="old('name', $filterByTitle)"
+                :genre="$filterByGenre"
+                :keyword="$filterByKeyword"
                 class="mb-6"
                 />
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">

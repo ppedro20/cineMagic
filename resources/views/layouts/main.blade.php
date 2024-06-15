@@ -38,6 +38,13 @@
                                invisible h-0 sm:visible sm:h-auto">
 
 
+                        <!-- Menu Item: Movies -->
+                        <x-menus.menu-item
+                        content="Movies"
+                        href="{{ route('movies.showmovies')}}"
+                        selected="{{ Route::currentRouteName() == 'movies.showmovies' }}"
+                        />
+
                         <!-- Menu Item: Screenigs -->
                         <x-menus.menu-item
                             content="Screenings"
@@ -45,12 +52,7 @@
                             selected="{{ Route::currentRouteName() == 'screenings.showscreenings' }}"
                             />
 
-                        <!-- Menu Item: Movies -->
-                        <x-menus.menu-item
-                            content="Movies"
-                            href="{{ route('movies.showmovies')}}"
-                            selected="{{ Route::currentRouteName() == 'movies.showmovies' }}"
-                            />
+
 
 
                         <div class="grow"></div>
@@ -97,7 +99,7 @@
                                     class="hidden">
                                     @csrf
                                 </form>
-                                <x-menus.submenu-item content="Log Out" selectable="0" form="form_to_logout_from_menu" />
+                                <x-menus.submenu-item content="Log Out" selectable="0" form="form_to_logout_from_menu"/>
 
                             </x-menus.submenu>
                         @else

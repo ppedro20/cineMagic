@@ -76,15 +76,17 @@ class ScreeningController extends \Illuminate\Routing\Controller
      */
     public function showScreenings(Request $request): View
     {
-        $currentDate = Carbon::now();
-        $currentTime = $currentDate->subMinutes(5)->format('H:i:s');
+        $currentDate = Carbon::today()->toDateString();
+        $currentTime = Carbon::now()->subMinutes(5)->format('H:i');
+        $endDate = Carbon::now()->addWeeks(2)->toDateString();
 
         $screeningsQuery = Screening::query()
-            ->where(function($query) use ($currentDate, $currentTime) {
-                $query->where('date', '>', $currentDate)
-                      ->orWhere(function($query) use ($currentDate, $currentTime) {
-                        $query->where('date', '=', $currentDate)
-                              ->where('start_time', '>=', $currentTime);
+            ->where(function($query) use ($currentDate, $currentTime, $endDate) {
+            $query->where('date', '>', $currentDate)
+                    ->where('date', '<=', $endDate)
+                    ->orWhere(function($query) use ($currentDate, $currentTime) {
+                    $query->where('date', '=', $currentDate)
+                        ->where('start_time', '>=', $currentTime);
                     });
         });
 

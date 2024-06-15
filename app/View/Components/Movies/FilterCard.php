@@ -17,7 +17,7 @@ class FilterCard extends Component
         public array $genres,
         public string $filterAction,
         public string $resetUrl,
-        public ?string $title = null,
+        public ?string $keyword = null,
         public ?string $genre = null,
     )
     {

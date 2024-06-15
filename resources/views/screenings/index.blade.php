@@ -9,10 +9,10 @@
             <x-screenings.filter-card
                 :filterAction="route('screenings.index')"
                 :resetUrl="route('screenings.index')"
-                :movie="old('movie', $filterByMovie)"
-                :theater="old('movie', $filterByTheater)"
-                :before="old('before', $filterByBefore)"
-                :after="old('after', $filterByAfter)"
+                :movie="$filterByMovie"
+                :theater="$filterByTheater"
+                :before="$filterByBefore"
+                :after="$filterByAfter"
                 class="mb-6"
                 />
             @can('create', App\Models\Screening::class)

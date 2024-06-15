@@ -9,7 +9,7 @@
             <x-theaters.filter-card
                 :filterAction="route('theaters.index')"
                 :resetUrl="route('theaters.index')"
-                :name="old('name', $filterByName)"
+                :name="$filterByName"
                 class="mb-6"
                 />
             @can('create', App\Models\Theater::class)
