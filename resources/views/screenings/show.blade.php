@@ -37,11 +37,19 @@
                     </h2>
                 </header>
                 <div class="mt-6 space-y-4">
-                    @include('screenings.shared.fields',[
-                        'mode' => 'show',
-                        'listTheaters' => $screening->theater->withTrashed()->pluck('name', 'id')->toArray(),
-                        'listMovies' => $screening->movie->withTrashed()->pluck('title', 'id')->toArray()
-                    ])
+                    @if(Auth::user()?->type == 'A')
+                        @include('screenings.shared.fields',[
+                            'mode' => 'show',
+                            'listTheaters' => $screening->theater->withTrashed()->pluck('name', 'id')->toArray(),
+                            'listMovies' => $screening->movie->withTrashed()->pluck('title', 'id')->toArray()
+                        ])
+                    @else
+                        @include('screenings.shared.fields',[
+                            'mode' => 'show',
+                            'listTheaters' => $screening->theater->pluck('name', 'id')->toArray(),
+                            'listMovies' => $screening->movie->pluck('title', 'id')->toArray()
+                        ])
+                    @endif
                 </div>
 
                 @if(Auth::user()?->type == 'A')

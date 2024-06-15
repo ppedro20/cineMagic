@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\View\View;
@@ -33,6 +34,8 @@ class MovieController extends \Illuminate\Routing\Controller
             $moviesQuery->where('genre_code', "$filterByGenre");
         }
         $movies = $moviesQuery
+            ->with('genre')
+            ->with('screenings')
             ->paginate(20)
             ->withQueryString();
 
@@ -42,6 +45,76 @@ class MovieController extends \Illuminate\Routing\Controller
             'movies.index',
             compact('movies', 'listGenres', 'filterByTitle', 'filterByGenre')
         );
+    }
+
+    public function showMovies(Request $request): View
+    {
+        $moviesQuery = Movie::orderBy('title');
+
+        $currentDate = Carbon::now();
+        $currentTime = $currentDate->subMinutes(5)->format('H:i:s');
+        $moviesQuery = $moviesQuery->whereHas('screenings', function($query) use ($currentDate, $currentTime) {
+            $query->where('date', '>', $currentDate)
+                ->orWhere(function($query) use ($currentDate, $currentTime) {
+                    $query->where('date', '=', $currentDate)
+                        ->where('start_time', '>=', $currentTime);
+                });
+        });;
+
+
+        $filterByMovie = $request->query('movie');
+        if ($filterByMovie) {
+            $moviesQuery->where('title', 'like', "%$filterByTitle%");
+        }
+
+
+        $filterByTitle = $request->query('title');
+        if ($filterByTitle) {
+            $moviesQuery->where('title', 'like', "%$filterByTitle%");
+        }
+        $filterByGenre = $request->query('genre');
+        if ($filterByGenre) {
+            $moviesQuery->where('genre_code', "$filterByGenre");
+        }
+        $movies = $moviesQuery
+            ->with('genre')
+            ->with(['screenings' => function($query) {
+                $query->orderBy('date')->orderBy('start_time');
+            }])
+            ->leftJoin('screenings', 'movies.id', '=', 'screenings.movie_id')
+            ->select('movies.*', DB::raw('MIN(screenings.date) as screening_date'), DB::raw('MIN(screenings.start_time) as screening_time'))
+            ->groupBy('movies.id')
+            ->orderBy('screening_date')
+            ->orderBy('screening_time')
+            ->paginate(20)
+            ->withQueryString();
+
+        $listGenres = Genre::select('code', 'name')->get()->pluck('name', 'code')->toArray();
+
+        return view(
+            'movies.showmovies',
+            compact('movies', 'listGenres', 'filterByTitle', 'filterByGenre')
+        );
+    }
+
+
+    public function show(Movie $movie): View
+    {
+        // Get the current date and time
+        $currentDate = Carbon::now()->toDateString();
+        $currentTime = Carbon::now()->toTimeString();
+
+        // Get screenings following the specified logic
+        $screenings = $movie->screenings()
+            ->where(function ($query) use ($currentDate, $currentTime) {
+                $query->where('date', '>', $currentDate)
+                    ->orWhere(function ($query) use ($currentDate, $currentTime) {
+                        $query->where('date', '=', $currentDate)
+                            ->where('start_time', '>=', $currentTime);
+                    });
+            })
+            ->get();
+        return view('movies.show', compact('movie', 'screenings'));
     }
 
     public function create(): View
@@ -136,10 +209,5 @@ class MovieController extends \Illuminate\Routing\Controller
                 ->with('alert-msg', "Poster of <a href='$url'><u>{$movie->title}</u></a> has been deleted.");
         }
         return redirect()->back();
-    }
-
-    public function show(Movie $movie): View
-    {
-        return view('movies.show', compact('movie'));
     }
 }

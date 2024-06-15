@@ -46,7 +46,11 @@
                             />
 
                         <!-- Menu Item: Movies -->
-                        <x-menus.menu-item content="Movies" href="{{ route('movies.index')}}" selected="" />
+                        <x-menus.menu-item
+                            content="Movies"
+                            href="{{ route('movies.showmovies')}}"
+                            selected="{{ Route::currentRouteName() == 'movies.showmovies' }}"
+                            />
 
 
                         <div class="grow"></div>

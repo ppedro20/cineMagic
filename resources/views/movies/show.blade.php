@@ -1,4 +1,4 @@
-@extends(Auth::user() ? 'layouts.admin':'layouts.main')
+@extends( Auth::user()?->type == 'A' ?'layouts.admin':'layouts.main')
 
 @section('header-title', $movie->title)
 
@@ -7,7 +7,7 @@
     <div class="p-4 sm:p-8 bg-white dark:bg-gray-900 shadow sm:rounded-lg">
         <div class="max-full">
             <section>
-                @if(auth()->user()->getTypeDescriptionAttribute() == 'Administrative')
+                @if(Auth::user()?->type == 'A')
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
                     @can('create', App\Models\Movie::class)
                         <x-button
@@ -41,7 +41,18 @@
                 <div class="mt-6 space-y-4">
                     @include('movies.shared.fields', ['mode' => 'show', 'listGenres' => $movie->genre->pluck('name', 'code')->toArray()])
                 </div>
-                 <!-- TODO @ can('viewAny', App\Models\Screeing::class) -->
+                @can('viewAny', App\Models\Screening::class)
+                    <h3 class="pt-16 pb-4 text-2xl font-medium text-gray-900 dark:text-gray-100">
+                        Screenings
+                    </h3>
+                    <x-screenings.table
+                    :screenings="$screenings"
+                        :showView="true"
+                        :showEdit="false"
+                        :showDelete="false"
+                        class="pt-4"
+                        />
+                @endcan
             </section>
         </div>
     </div>

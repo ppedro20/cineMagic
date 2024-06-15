@@ -13,6 +13,7 @@ class Image extends Component
      */
     public function __construct(
         public string $name,
+        public bool $choosefile = true,
         public string $label = '',
         public string $imageUrl = '',
         public bool $readonly = false,

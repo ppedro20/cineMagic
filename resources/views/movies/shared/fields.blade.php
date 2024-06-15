@@ -1,6 +1,7 @@
 @php
     $mode = $mode ?? 'edit';
     $readonly = $mode == 'show';
+    $choosefile = !$readonly;
 @endphp
 <div class="flex flex-wrap space-x-8">
     <div class="grow mt-6 space-y-4">
@@ -27,6 +28,7 @@
             name="poster_file"
             label="Poster"
             width="md"
+            :choosefile="$choosefile"
             :readonly="$readonly"
             deleteTitle="Delete Poster"
             :deleteAllow="($mode == 'edit') && ($movie->poster_filename)"

@@ -71,6 +71,9 @@ Route::middleware('auth', 'verified')->group(function () {
         ->name('movies.poster.destroy')
         ->can('update', 'movie');
 
+        Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
+        ->name('movies.showmovies');
+
     Route::resource('movies', MovieController::class);
 
 

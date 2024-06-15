@@ -52,21 +52,23 @@
                         accept="image/png, image/jpeg"
                         onchange="previewFile()"
                         class="hidden"/>
-                    <label for="id_{{ $name }}"
-                        class="min-w-32
-                        px-4 py-2 mr-2 inline-block border border-transparent
-                        rounded-md
-                        font-medium text-sm tracking-widest
-                        focus:outline-none focus:ring-2
-                        focus:ring-indigo-500 dark:focus:ring-indigo-400
-                        focus:ring-offset-2 transition ease-in-out duration-150
-                        text-white dark:text-gray-900
-                        bg-gray-800 dark:bg-gray-200
-                        hover:bg-gray-900 dark:hover:bg-gray-100
-                        focus:bg-gray-900 dark:focus:bg-gray-100
-                        active:bg-gray-950 dark:active:bg-gray-50
-                        cursor-pointer"
-                    >Choose file</label>
+                    @if ($choosefile)
+                        <label for="id_{{ $name }}"
+                            class="min-w-32
+                            px-4 py-2 mr-2 inline-block border border-transparent
+                            rounded-md
+                            font-medium text-sm tracking-widest
+                            focus:outline-none focus:ring-2
+                            focus:ring-indigo-500 dark:focus:ring-indigo-400
+                            focus:ring-offset-2 transition ease-in-out duration-150
+                            text-white dark:text-gray-900
+                            bg-gray-800 dark:bg-gray-200
+                            hover:bg-gray-900 dark:hover:bg-gray-100
+                            focus:bg-gray-900 dark:focus:bg-gray-100
+                            active:bg-gray-950 dark:active:bg-gray-50
+                            cursor-pointer"
+                        >Choose file</label>
+                    @endif
                     <label id="id_{{ $name }}_selected_file"
                         class="text-sm text-slate-500 truncate"></label>
                 </div>

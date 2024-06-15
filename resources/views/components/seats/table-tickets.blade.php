@@ -20,15 +20,11 @@
                         <div class="flex items-center justify-start">
                             @if ($seat->isReserved($screening->id))
                                 <x-button
-                                    element="submit"
+                                    element="a"
                                     :text="$seat->seat_number"
                                     type="danger"
-                                    form="form_remove_cart_{{$seat->name}}"
+                                    href="#"
                                     />
-                                <form id="form_remove_cart_{{$seat->name}}" class="hidden" method="POST" action="{{ route('cart.remove', ['screening' => $screening, 'seat' => $seat]) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                </form>
                             @else
                                 <x-button
                                     element="submit"
@@ -39,32 +35,7 @@
                                 <form id="form_add_cart_{{$seat->name}}" class="hidden" method="POST" action="{{ route('cart.add', ['screening' => $screening, 'seat' => $seat]) }}">
                                     @csrf
                                 </form>
-
-
                             @endif
-
-                            <div class="flex flex-col px-0.5">
-                                @isset($showEdit)
-                                    @if ($showEdit)
-                                        @can('update', $seat)
-                                        <x-table.icon-edit class="px-0.5"
-                                            href="{{ route('seats.edit', ['seat' => $seat]) }}" />
-                                        @else
-                                            <x-table.icon-edit class="px-0.5" :enabled="false" />
-                                        @endcan
-                                    @endif
-                                @endisset
-                                @isset($showDelete)
-                                    @if ($showDelete)
-                                        @can('delete', $seat)
-                                            <x-table.icon-delete class="px-0.5"
-                                                action="{{ route('seats.destroy', ['seat' => $seat]) }}" />
-                                        @else
-                                            <x-table.icon-delete class="px-0.5" :enabled="false" />
-                                        @endcan
-                                    @endif
-                                @endisset
-                            </div>
                         </div>
                     </td>
                 @endforeach

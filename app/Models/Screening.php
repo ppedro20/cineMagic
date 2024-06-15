@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Models\Movie;
 use App\Models\Ticket;
 use App\Models\Theater;
@@ -33,7 +34,6 @@ class Screening extends Model
         return $this->hasMany(Ticket::class, 'screening_id');
     }
 
-
     /**
      * Get the theater that owns the Screening
      *
@@ -52,5 +52,26 @@ class Screening extends Model
     public function movie(): BelongsTo
     {
         return $this->belongsTo(Movie::class, 'movie_id')->withTrashed();
+    }
+
+    public static function filterPastScreenings(array $screenings)
+    {
+        $currentDate = Carbon::now();
+        $currentTime = $currentDate->subMinutes(5)->format('H:i:s');
+
+        return array_filter($screenings, function ($screening) use ($currentDate, $currentTime) {
+            $screeningDate = Carbon::parse($screening['date']);
+            $screeningTime = $screening['start_time'];
+
+            if ($screeningDate->greaterThan($currentDate)) {
+                return true;
+            }
+
+            if ($screeningDate->equalTo($currentDate) && $screeningTime >= $currentTime) {
+                return true;
+            }
+
+            return false;
+        });
     }
 }
