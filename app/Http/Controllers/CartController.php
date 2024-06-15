@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CartConfirmationFormRequest;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
+use App\Models\Seat;
 use App\Models\Ticket;
-use App\Models\Student;
+use App\Models\Screening;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\CartConfirmationFormRequest;
 
 class CartController extends Controller
 {
@@ -18,28 +19,36 @@ class CartController extends Controller
         return view('cart.show', compact('cart'));
     }
 
-    public function addToCart(Request $request, Ticket $ticket): RedirectResponse
+    public function addToCart(Request $request, Screening $screening, Seat $seat): RedirectResponse
     {
-        if ($ticket->seat->isReserved){
+        $cart = session('cart', []);
+        if ($seat->isReserved($screening->id)){
             $alertType = 'warning';
-                $url = route('tickets.show', ['ticket' => $ticket]);
-                $htmlMessage = "Ticket <a href='$url'>#{$ticket->id}</a>
-                <strong>\"{$ticket->seat->name}\"</strong> was not added to the cart because it is already reserved!";
-                return back()
-                    ->with('alert-msg', $htmlMessage)
-                    ->with('alert-type', $alertType);
+            $htmlMessage = "Ticket with the Seat
+                <strong>\"{seat->name}\"</strong> was not added to the cart because it is already reserved!";
+            return back()
+                ->with('alert-msg', $htmlMessage)
+                ->with('alert-type', $alertType);
         }
 
-        $cart = session('cart', []);
+        $ticket = new Ticket();
+        $ticket->screening_id = $screening->id;
+        $ticket->seat_id = $seat->id;
+
+
         if (!$cart) {
+
             $cart = collect([$ticket]);
             $request->session()->put('cart', $cart);
         } else {
-            if ($cart->firstWhere('id', $ticket->id)) {
+            $ticketExists = $cart->first(function ($item) use ($ticket) {
+                return $item->screening_id === $ticket->screening_id && $item->seat_id === $ticket->seat_id;
+            });
+
+            if ($ticketExists) {
                 $alertType = 'warning';
-                $url = route('tickets.show', ['ticket' => $ticket]);
-                $htmlMessage = "Ticket <a href='$url'>#{$ticket->id}</a>
-                <strong>\"{$ticket->seat->name}\"</strong> was not added to the cart because it is already there!";
+                $htmlMessage = "Ticket with the Seat
+                <strong>\"{$seat->name}\"</strong> was not added to the cart because it is already there!";
                 return back()
                     ->with('alert-msg', $htmlMessage)
                     ->with('alert-type', $alertType);
@@ -48,22 +57,23 @@ class CartController extends Controller
             }
         }
         $alertType = 'success';
-        $url = route('tickets.show', ['ticket' => $ticket]);
-        $htmlMessage = "Ticket <a href='$url'>#{$ticket->id}</a>
+        $htmlMessage = "Ticket with the Seat
                 <strong>\"{$ticket->seat->name}\"</strong> was added to the cart.";
         return back()
             ->with('alert-msg', $htmlMessage)
             ->with('alert-type', $alertType);
     }
 
-    public function removeFromCart(Request $request, Ticket $ticket): RedirectResponse
+    public function removeFromCart(Request $request, string $screening, string $seat): RedirectResponse
     {
+        // TODO
+
         $url = route('screenings.show', ['screening' => $screening]);// Verify
         $cart = session('cart', []);
         if (!$cart) {
             $alertType = 'warning';
-            $htmlMessage = "Ticket <a href='$url'>#{$S->id}</a>
-                <strong>\"{$ticket->seat->name}\"</strong> was not removed from the cart because cart is empty!";
+            $htmlMessage = "Ticket with the Seat
+                <strong>\"{$seat->name}\"</strong> was not removed from the cart because cart is empty!";
             return back()
                 ->with('alert-msg', $htmlMessage)
                 ->with('alert-type', $alertType);
@@ -83,7 +93,7 @@ class CartController extends Controller
             } else {
                 $alertType = 'warning';
                 $htmlMessage = "Ticket <a href='$url'>#{$ticket->seat->name}</a>
-                <strong>\"{$ticket->seat->name}\"</strong> was not removed from the cart because cart does not include it!";
+                <strong>\"{$seat->name}\"</strong> was not removed from the cart because cart does not include it!";
                 return back()
                     ->with('alert-msg', $htmlMessage)
                     ->with('alert-type', $alertType);
@@ -102,6 +112,7 @@ class CartController extends Controller
 
     public function confirm(CartConfirmationFormRequest $request): RedirectResponse
     {
+        // Feito na aula com a stora
         $cart = session('cart', []);
         if (!$cart || (count($cart) == 0)) {
             return back()
@@ -120,6 +131,7 @@ class CartController extends Controller
             $purchase->date = Carbon::today();
             $purchase->total_price = 0;
 
+            $totalPrice = 0;
             $ignored = 0;
             $configuration = Configuration::firts();
             $date = Carbon::today();
@@ -140,7 +152,7 @@ class CartController extends Controller
                         'screening_id' => $item['screening']->id,
                         'seat' => $item['seat']->id,
                         'price' =>$price
-                    ]
+                    ];
 
                     $totalPrice += $price;
                 } else {

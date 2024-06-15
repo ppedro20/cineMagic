@@ -1,22 +1,19 @@
 <?php
 
-namespace App\View\Components\Tickets;
+namespace App\View\Components\Table;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Table extends Component
+class IconAddCart extends Component
 {
     /**
      * Create a new component instance.
      */
     public function __construct(
-        public object $tickets,
-        public bool $showView = true,
-        public bool $showEdit = true,
-        public bool $showDelete = true,
-        public bool $showRemoveFromCart = true,
+        public string $action = '#',
+        public string $method = 'POST',
     )
     {
         //
@@ -27,6 +24,6 @@ class Table extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.tickets.table');
+        return view('components.table.icon-add-cart');
     }
 }

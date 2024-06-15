@@ -53,7 +53,8 @@
                     </div>
                 </form>
 
-                <x-seats.table :seats="$screening->theater->seats"
+                <x-seats.table-reserved :seats="$screening->theater->seats->withTrashed()->get()"
+                    :screeningId="$screening->id"
                     :showView="true"
                     :showEdit="false"
                     :showDelete="false"

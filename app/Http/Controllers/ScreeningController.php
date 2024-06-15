@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Movie;
 use App\Models\Theater;
 use App\Models\Screening;
@@ -75,19 +76,53 @@ class ScreeningController extends \Illuminate\Routing\Controller
      */
     public function showScreenings(Request $request): View
     {
-        $filterByName = $request->query('name');
-        $screeningsQuery = Screening::query();
-        if ($filterByName !== null) {
-            $screeningsQuery->where('name', 'like', "%$filterByName%");
+        $currentDate = Carbon::now();
+        $currentTime = $currentDate->subMinutes(5)->format('H:i:s');
+
+        $screeningsQuery = Screening::query()
+            ->where(function($query) use ($currentDate, $currentTime) {
+                $query->where('date', '>', $currentDate)
+                      ->orWhere(function($query) use ($currentDate, $currentTime) {
+                        $query->where('date', '=', $currentDate)
+                              ->where('start_time', '>=', $currentTime);
+                    });
+        });
+
+
+        $filterByMovie = $request->query('movie');
+        if ($filterByMovie) {
+            $screeningsQuery->whereHas('movie', function($query) use ($filterByMovie) {
+                $query->where('title', 'like', "%$filterByMovie%");
+            });
         }
 
+        $filterByTheater = $request->query('theater');
+        if ($filterByTheater) {
+            $screeningsQuery->whereHas('theater', function($query) use ($filterByTheater) {
+                $query->where('name', 'like', "%$filterByTheater%");
+            });
+        }
+
+        $filterByBefore = $request->query('before');
+        if ($filterByBefore) {
+            $screeningsQuery->whereDate('date', '<', $filterByBefore);
+        }
+
+        $filterByAfter = $request->query('after');
+        if ($filterByAfter) {
+            $screeningsQuery->whereDate('date', '>', $filterByAfter);
+        }
+
+
         $screenings = $screeningsQuery
-            ->orderBy('name')
+            ->with('movie')
+            ->with('theater')
             ->paginate(20)
             ->withQueryString();
+
         return view(
-            'screenings.showScreening',
-            compact('screenings', 'filterByName')
+            'screenings.showscreenings',
+            compact('screenings', 'filterByMovie', 'filterByBefore', 'filterByAfter', 'filterByTheater')
         );
     }
 

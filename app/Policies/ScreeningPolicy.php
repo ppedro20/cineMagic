@@ -25,6 +25,15 @@ class ScreeningPolicy
     {
         return true;
     }
+    
+
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function showScreenings(User $user): bool
+    {
+        return true;
+    }
 
     /**
      * Determine whether the user can create models.

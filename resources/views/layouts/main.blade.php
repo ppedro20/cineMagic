@@ -35,9 +35,17 @@
                     <!-- Menu Items -->
                     <div id="menu-container"
                         class="grow flex flex-col sm:flex-row items-stretch
-                    invisible h-0 sm:visible sm:h-auto">
+                               invisible h-0 sm:visible sm:h-auto">
+
+
                         <!-- Menu Item: Screenigs -->
-                        <x-menus.menu-item content="Screenings" href="#" selected="" />
+                        <x-menus.menu-item
+                            content="Screenings"
+                            href="{{ route('screenings.showscreenings')}}"
+                            selected="{{ Route::currentRouteName() == 'screenings.showscreenings' }}"
+                            />
+
+
 
                         <!-- Menu Item: Movies -->
                         <x-menus.menu-item content="Movies" href="#" selected="" />
@@ -49,10 +57,8 @@
 
                         <!-- Menu Item: Cart -->
                         @if (session('cart'))
-                            @can('use-cart')
                                 <x-menus.cart :href="route('cart.show')" selectable="1"
                                     selected="{{ Route::currentRouteName() == 'cart.show' }}" :total="session('cart')->count()" />
-                            @endcan
                         @endif
 
                         @auth
@@ -70,9 +76,9 @@
                                 </x-slot>
                                 <x-menus.submenu-item content="Área de administração" selectable="0"
                                     href="{{ route('dashboard') }}" />
-                                @can('viewMy', App\Models\Discipline::class)
+                                @can('viewMy', App\Models\Ticket::class)
                                     <!-- TODO -->
-                                    <x-menus.submenu-item content="My Disciplines" selectable="0"
+                                    <x-menus.submenu-item content="My Tickets" selectable="0"
                                         href="{{ route('disciplines.my') }}" />
                                 @endcan
                                 @auth

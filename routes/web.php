@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
@@ -13,21 +14,27 @@ use App\Http\Controllers\AdministrativeController;
 Route::view('/', 'home')->name('home');
 
 
-
-/* CART TODO
 // Use Cart routes should be accessible to the public
 Route::middleware('can:use-cart')->group(function () {
-    // Add a discipline to the cart:
-    Route::post('cart/{discipline}', [CartController::class, 'addToCart'])
-        ->name('cart.add');
-    // Remove a discipline from the cart:
-    Route::delete('cart/{discipline}', [CartController::class, 'removeFromCart'])
-        ->name('cart.remove');
-    // Show the cart:
-    Route::get('cart', [CartController::class, 'show'])->name('cart.show');
-    // Clear the cart:
-    Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
-}); */
+
+});
+// --- TESTING ---
+// Add a discipline to the cart:
+Route::post('cart/{screening}/{seat}', [CartController::class, 'addToCart'])
+    ->name('cart.add');
+
+// Remove a discipline from the cart:
+Route::delete('cart/{screening}/{seat}', [CartController::class, 'removeFromCart'])
+    ->name('cart.remove');
+// Show the cart:
+Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+// Clear the cart:
+Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
+// Confirm Cart
+Route::post('cart', [CartController::class, 'confirm'])
+        ->name('cart.confirm');
+// --- ------- ---
+
 
 /* ----- Non-Verified users ----- */
 Route::middleware('auth')->group(function () {
@@ -74,7 +81,11 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::resource('seats', SeatController::class)->except(['create']);
 
+    Route::get('screenings/showscreenings', [ScreeningController::class, 'showScreenings'])
+        ->name('screenings.showscreenings');
+
     Route::resource('screenings', ScreeningController::class);
+
 
     //TODO
     //Route::get('tickets',[ConfigurationController::class, 'index']);
@@ -85,10 +96,6 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::put('configurations',[ConfigurationController::class, 'update'])
         ->name('configurations.update');
-    /* CART TODO
-    Route::post('cart', [CartController::class, 'confirm'])
-        ->name('cart.confirm')
-        ->can('confirm-cart');*/
 });
 
 

@@ -3,7 +3,6 @@
 @endphp
 
 
-
 <div {{ $attributes }}>
     <table class="table-auto border-collapse w-full">
         <thead>
@@ -19,20 +18,29 @@
                 @foreach ($seats as $seat)
                     <td class="px-2 py-2 text-left">
                         <div class="flex items-center justify-start">
-                            @if ($seat->isReserved($screeningId))
+                            @if ($seat->isReserved($screening->id))
                                 <x-button
-                                    element='a'
-                                    href="#"
-                                    text="{{ $seat->seat_number }}"
+                                    element="submit"
+                                    :text="$seat->seat_number"
                                     type="danger"
-                                />
+                                    form="form_remove_cart_{{$seat->name}}"
+                                    />
+                                <form id="form_remove_cart_{{$seat->name}}" class="hidden" method="POST" action="{{ route('cart.remove', ['screening' => $screening, 'seat' => $seat]) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
                             @else
                                 <x-button
-                                    element='a'
-                                    href="{{ route('seats.show', ['seat' => $seat]) }}"
-                                    text="{{ $seat->seat_number }}"
+                                    element="submit"
+                                    :text="$seat->seat_number"
                                     type="primary"
+                                    form="form_add_cart_{{$seat->name}}"
                                 />
+                                <form id="form_add_cart_{{$seat->name}}" class="hidden" method="POST" action="{{ route('cart.add', ['screening' => $screening, 'seat' => $seat]) }}">
+                                    @csrf
+                                </form>
+
+
                             @endif
 
                             <div class="flex flex-col px-0.5">

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends( Auth::user()?->type == 'A' ?'layouts.admin':'layouts.main')
 
 @section('header-title', 'Screening of '.$screening->movie->title)
 
@@ -37,21 +37,39 @@
                     </h2>
                 </header>
                 <div class="mt-6 space-y-4">
-                    @include('screenings.shared.fields',['mode' => 'show', 'listTheaters' => $screening->theater->pluck('name', 'id')->toArray(), 'listMovies' => $screening->movie->pluck('title', 'id')->toArray()])
+                    @include('screenings.shared.fields',[
+                        'mode' => 'show',
+                        'listTheaters' => $screening->theater->withTrashed()->pluck('name', 'id')->toArray(),
+                        'listMovies' => $screening->movie->withTrashed()->pluck('title', 'id')->toArray()
+                    ])
                 </div>
+
+                @if(Auth::user()?->type == 'A')
                 <x-seats.table-reserved
-                    :seats="$screening->theater->seats"
+                    :seats="$screening->theater->seats()->withTrashed()->get()"
                     :screeningId="$screening->id"
                     :showView="true"
                     :showEdit="false"
                     :showDelete="false"
                     class="pt-4"
                     />
+                @else
+                <x-seats.table-tickets
+                    :seats="$screening->theater->seats"
+                    :screening="$screening"
+                    :showView="true"
+                    :showEdit="false"
+                    :showDelete="false"
+                    class="pt-4"
+                    />
+
+                @endif
 
             </section>
         </div>
     </div>
 </div>
+
 @endsection
 
 
