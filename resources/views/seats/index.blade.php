@@ -16,7 +16,7 @@
             @can('create', App\Models\Seat::class)
                 <div class="flex items-center gap-4 mb-4">
                     <x-button
-                        href="{{ route('seats.create', ['theaterId' => $seats[10]?->theater->id]) }}"
+                        href="{{ route('seats.create', ['theaterId' => $seats[0]?->theater->id]) }}"
                         text="Create a new seat"
                         type="success"/>
                 </div>

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header-title', $seat->row.', '.$seat->seat_number)
+@section('header-title', $seat->name)
 
 @section('main')
 <div class="flex flex-col space-y-6">
@@ -33,7 +33,7 @@
                 </div>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Edit seat "{{ $seat->row.', '.$seat->seat_number }}"
+                        Edit seat "{{ $seat->name }}"
                     </h2>
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300  mb-6">
                         Click on "Save" button to store the information.
