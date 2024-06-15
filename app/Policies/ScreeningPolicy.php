@@ -25,7 +25,7 @@ class ScreeningPolicy
     {
         return true;
     }
-    
+
 
     /**
      * Determine whether the user can view the model.
@@ -40,7 +40,7 @@ class ScreeningPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->type !== 'C';
     }
 
     /**
@@ -48,7 +48,7 @@ class ScreeningPolicy
      */
     public function update(User $user, Screening $screening): bool
     {
-        return true;
+        return $user->type !== 'C';
     }
 
     /**
@@ -56,7 +56,7 @@ class ScreeningPolicy
      */
     public function delete(User $user, Screening $screening): bool
     {
-        return true;
+        return $user->type !== 'C';
     }
 
     /**
@@ -64,7 +64,7 @@ class ScreeningPolicy
      */
     public function restore(User $user, Screening $screening): bool
     {
-        return true;
+        return $user->type !== 'C';
     }
 
     /**
@@ -72,6 +72,6 @@ class ScreeningPolicy
      */
     public function forceDelete(User $user, Screening $screening): bool
     {
-        return true;
+        return $user->type !== 'C';
     }
 }

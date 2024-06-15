@@ -134,15 +134,16 @@ class CartController extends Controller
             $totalPrice = 0;
             $ignored = 0;
             $configuration = Configuration::first();
-            $date = Carbon::today();
+            $currentDate = Carbon::today()->toDateString();
+            $currentTime = Carbon::now()->subMinutes(5)->format('H:i');
             $insertTicket = [];
 
             foreach ($cart as $item) {
                 // VERIFICAR formatos e condições
                 if (
                     $item['screening']->tickets()->where('seat_id', $item['seat']->id)->count() == 0 &&
-                    ($item['screening']->date > $date ||
-                    $item['screening']->date == $date &&  $item['screening']->start_time >= Carbon::now()->subMinutes(5)->format('h:i:s'))
+                    ($item['screening']->date > $currentDate ||
+                    $item['screening']->date == $currentDate &&  $item['screening']->start_time >= $currentTime)
                 ) {
                     $price = Auth::user()?
                         $configuration->ticket_price - $configuration->registered_customer_ticket_discount:

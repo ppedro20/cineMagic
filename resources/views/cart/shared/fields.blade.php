@@ -6,7 +6,7 @@
 
     @if (Auth::User())
         <div>
-            <x-field.input name="customer_name" label="Name" width="lg" class hidden
+            <x-field.input name="customer_name" type="text" label="Name" width="lg" class hidden
                 value="{{ old('customer_name', Auth::User()->name) }}" />
 
 
@@ -28,10 +28,10 @@
 
     @else
         <div>
-            <x-field.input name="customer_name" label="Name" width="lg" :readonly="false"
+            <x-field.input name="customer_name" type="text" label="Name" width="lg" :readonly="false"
                 value="{{ old('customer_name') }}" />
 
-            <x-field.input name="customer_email" label="Email" width="lg" :readonly="false"
+            <x-field.input name="customer_email" type="email" label="Email" width="lg" :readonly="false"
                 value="{{ old('customer_email') }}" />
 
             <x-field.input name="nif" type="number" label="NIF (optional)" width="lg" :readonly="false"
@@ -39,7 +39,7 @@
         </div>
 
         <div>
-            <x-field.select onchange="changeType(this)" name="payment_type" type="number" label="Payment Type" width="lg" :readonly="false"
+            <x-field.select onchange="changeType(this)" name="payment_type" label="Payment Type" width="lg" :readonly="false"
                 value="{{ old('payment_type') }}"
                 :options="$payment_options" />
 
@@ -63,7 +63,7 @@
         if (selectedPaymentType === 'MBWAY' ||selectedPaymentType === 'VISA') {
             type = 'number';
         } else {
-            type = 'text';
+            type = 'email';
         }
         payment_ref.type = type;
     }
