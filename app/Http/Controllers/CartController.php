@@ -13,6 +13,7 @@ use App\Models\Configuration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\QRcodeGenerateController;
 use App\Http\Requests\CartConfirmationFormRequest;
 
 class CartController extends Controller
@@ -185,9 +186,12 @@ class CartController extends Controller
                         $ticket = new Ticket();
                         $ticket->fill($t);
                         $ticket->purchase_id = $purchase->id;
-                        $ticket->save();// antes do qr code??
-                        $ticket->qrcode_url = route('home');// tickets.show, ['ticket' => $t]
+                        $ticket->save();
 
+                        /* TODO
+                        $ticket->qrcode_url = QRcodeGenerateController::store(route('tickets.show', ['ticket' => $ticket]), $ticket->id);
+                        $ticket->save();
+                        */
                     }
                 });
                 $request->session()->forget('cart');

@@ -119,6 +119,8 @@ class ScreeningController extends \Illuminate\Routing\Controller
         $screenings = $screeningsQuery
             ->with('movie')
             ->with('theater')
+            ->orderBy('date')
+            ->orderBy('start_time')
             ->paginate(20)
             ->withQueryString();
 

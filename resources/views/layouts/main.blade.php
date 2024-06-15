@@ -52,6 +52,16 @@
                             selected="{{ Route::currentRouteName() == 'screenings.showscreenings' }}"
                             />
 
+                        @if (Auth::User()?->type === 'C')
+                            <!-- Menu Item: Screenigs -->
+                            <x-menus.menu-item
+                            content="My Tickets"
+                            href="{{ route('tickets.index')}}"
+                            selected="{{ Route::currentRouteName() == 'tickets.index' }}"
+                            />
+                        @endif
+
+
 
 
 

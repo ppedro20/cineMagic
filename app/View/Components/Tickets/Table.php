@@ -16,6 +16,8 @@ class Table extends Component
         public bool $showView = true,
         public bool $showEdit = true,
         public bool $showDelete = true,
+        public bool $showStatus = true,
+        public bool $showTotal = false,
         public bool $showRemoveFromCart = true,
     )
     {

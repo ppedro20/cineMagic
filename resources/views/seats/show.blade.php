@@ -8,7 +8,7 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
-                    @can('create', App\Models\seat::class)
+                    @can('create', App\Models\Seat::class)
                         <x-button
                             href="{{ route('seats.create', ['theaterId' => $seat->theater->id]) }}"
                             text="New"

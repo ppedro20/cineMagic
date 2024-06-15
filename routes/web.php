@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TheaterController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\ConfigurationController;
@@ -21,7 +22,9 @@ Route::resource('movies', MovieController::class)->only(['show']);
 // Screenings
 Route::get('screenings/showscreenings', [ScreeningController::class, 'showScreenings'])
     ->name('screenings.showscreenings');
-Route::resource('screenings', ScreeningController::class)->only(['show']);
+
+Route::get('screenings/show/{screening}',[ScreeningController::class, 'show'])
+    ->name('screenings.show');
 
 
 // Cart
@@ -83,16 +86,13 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::resource('seats', SeatController::class)->except(['create']);
 
-
-
-
-
-    //TODO
-    //Route::get('tickets',[ConfigurationController::class, 'index']);
-    //Route::get('tickets',[ConfigurationController::class, 'show']);
-
+    Route::get('tickets',[TicketController::class, 'index'])
+        ->name('tickets.index');
+    Route::get('tickets/{ticket}',[TicketController::class, 'show'])
+        ->name('tickets.show');
     Route::get('configurations',[ConfigurationController::class, 'edit'])
         ->name('configurations.edit');
+
 
     Route::put('configurations',[ConfigurationController::class, 'update'])
         ->name('configurations.update');

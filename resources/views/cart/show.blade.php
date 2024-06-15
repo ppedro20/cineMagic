@@ -14,10 +14,8 @@
                 <x-tickets.table
                     :tickets="$cart"
                     :showView="false"
-                    :showEdit="false"
-                    :showDelete="false"
-                    :showAddCart="false"
-                    :showRemoveFromCart="true"
+                    :showStatus="false"
+                    :showTotal="true"
                     />
             </div>
             <div class="mt-12">

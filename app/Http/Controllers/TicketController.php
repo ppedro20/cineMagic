@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use Illuminate\View\View;
+
 use Illuminate\Http\Request;
-use Spatie\FlareClient\View;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class TicketController extends \Illuminate\Routing\Controller
@@ -18,13 +20,16 @@ class TicketController extends \Illuminate\Routing\Controller
 
     public function index(Request $request): View
     {
+        $userId = Auth::user()->id;
         $tickets = Ticket::query()
-        ->where('customer_id', Auth::user()->id)
+        ->whereHas('purchase', function($query) use ($userId) {
+            $query->where('customer_id', $userId);
+        })
         ->with(['purchase', 'seat', 'screening'])
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 
-        return view('tickets.show', compact('tickets'));
+        return view('tickets.index', compact('tickets'));
     }
 
     public function show(Ticket $ticket): View
@@ -32,7 +37,6 @@ class TicketController extends \Illuminate\Routing\Controller
         return view('tickets.show', compact('ticket'));
     }
 
-    // ??É preciso??
     public function validate(Ticket $ticket): View
     {
         return view('tickets.validate', compact('ticket'));
