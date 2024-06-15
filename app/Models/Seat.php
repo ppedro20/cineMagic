@@ -57,6 +57,7 @@ class Seat extends Model
         }
         return $seatsPerRow;
     }
+    
     public function getNameAttribute()
     {
         return $this->row.$this->seat_number;

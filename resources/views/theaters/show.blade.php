@@ -41,8 +41,8 @@
                 </div>
                 <x-seats.table :seats="$theater->seats"
                     :showView="true"
-                    :showEdit="true"
-                    :showDelete="true"
+                    :showEdit="false"
+                    :showDelete="false"
                     class="pt-4"
                     />
 

@@ -19,9 +19,21 @@
                 @foreach ($seats as $seat)
                     <td class="px-2 py-2 text-left">
                         <div class="flex items-center justify-between">
-                            <x-button element='a' href="{{ route('seats.show', ['seat' => $seat]) }}"
-                                text="{{ $seat->seat_number }}"
-                                type="primary" />
+                            @isset($showView)
+                                    @if ($showView)
+                                        @can('view', $seat)
+                                        <x-button element='a' href="{{ route('seats.show', ['seat' => $seat]) }}"
+                                            text="{{ $seat->seat_number }}"
+                                            type="primary" />
+                                        @endcan
+                                    @else
+                                        <x-button element='a' href="#"
+                                            text="{{ $seat->seat_number }}"
+                                            type="primary" />
+
+                                    @endif
+                                @endisset
+
 
                             <div class="flex flex-col">
                                 @isset($showEdit)

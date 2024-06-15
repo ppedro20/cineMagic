@@ -22,6 +22,7 @@ class TheaterController extends \Illuminate\Routing\Controller
     {
         $filterByName = $request->query('name');
         $theatersQuery = Theater::query();
+
         if ($filterByName !== null) {
             $theatersQuery->where('name', 'like', "%$filterByName%");
         }
@@ -30,6 +31,7 @@ class TheaterController extends \Illuminate\Routing\Controller
             ->orderBy('name')
             ->paginate(20)
             ->withQueryString();
+
         return view(
             'theaters.index',
             compact('theaters', 'filterByName')
@@ -124,6 +126,7 @@ class TheaterController extends \Illuminate\Routing\Controller
                             <a href='$url'><u>{$theater->name}</u></a>
                             because there was an error with the operation!";
         }
+
         return redirect()->route('theaters.index')
             ->with('alert-type', $alertType)
             ->with('alert-msg', $alertMsg);

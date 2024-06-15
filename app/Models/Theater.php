@@ -40,6 +40,9 @@ class Theater extends Model
         return $this->hasMany(Screening::class);
     }
 
+
+
+    // Estão a ser usados?
     public function getRowsAttribute(){
 		return $this->steats()->orderby('row')->pluck('row')->unique();
 	}
