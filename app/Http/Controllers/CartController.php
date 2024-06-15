@@ -41,11 +41,11 @@ class CartController extends Controller
             $cart = collect([$ticket]);
             $request->session()->put('cart', $cart);
         } else {
-            $ticketExists = $cart->first(function ($item) use ($ticket) {
+            $ticketInCart = $cart->first(function ($item) use ($ticket) {
                 return $item->screening_id === $ticket->screening_id && $item->seat_id === $ticket->seat_id;
             });
 
-            if ($ticketExists) {
+            if ($ticketInCart) {
                 $alertType = 'warning';
                 $htmlMessage = "Ticket with the Seat
                 <strong>\"{$seat->name}\"</strong> was not added to the cart because it is already there!";
@@ -64,11 +64,8 @@ class CartController extends Controller
             ->with('alert-type', $alertType);
     }
 
-    public function removeFromCart(Request $request, string $screening, string $seat): RedirectResponse
+    public function removeFromCart(Request $request, Screening $screening, Seat $seat): RedirectResponse
     {
-        // TODO
-
-        $url = route('screenings.show', ['screening' => $screening]);// Verify
         $cart = session('cart', []);
         if (!$cart) {
             $alertType = 'warning';
@@ -78,22 +75,27 @@ class CartController extends Controller
                 ->with('alert-msg', $htmlMessage)
                 ->with('alert-type', $alertType);
         } else {
-            $element = $cart->firstWhere('id', $ticket->id);
-            if ($element) {
-                $cart->forget($cart->search($element));
+            $ticketInCart = $cart->first(function ($item) use ($screening, $seat) {
+                return $item->screening_id === $screening->id && $item->seat_id === $seat->id;
+            });
+
+            if ($ticketInCart) {
+                $cart->forget($cart->search($ticketInCart));
                 if ($cart->count() == 0) {
                     $request->session()->forget('cart');
                 }
                 $alertType = 'success';
-                $htmlMessage = "Ticket <a href='$url'>#{$ticket->id}</a>
-                <strong>\"{$ticket->seat->name}\"</strong> was removed from the cart.";
+                $htmlMessage = "Ticket with the Seat
+                    <strong>\"{$seat->name}\"</strong> was removed from the cart.";
+
                 return back()
                     ->with('alert-msg', $htmlMessage)
                     ->with('alert-type', $alertType);
             } else {
                 $alertType = 'warning';
-                $htmlMessage = "Ticket <a href='$url'>#{$ticket->seat->name}</a>
-                <strong>\"{$seat->name}\"</strong> was not removed from the cart because cart does not include it!";
+                $htmlMessage = "Ticket with the Seat
+                    <strong>\"{$seat->name}\"</strong> was not removed from the cart because cart does not have it!";
+
                 return back()
                     ->with('alert-msg', $htmlMessage)
                     ->with('alert-type', $alertType);

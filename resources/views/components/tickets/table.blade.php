@@ -81,7 +81,7 @@
                     @if ($showRemoveFromCart)
                         <td>
                             <div {{ $attributes->merge(['class' => 'hover:text-red-600']) }}>
-                                <form method="POST" action="{{ route('cart.remove', ['screening' => '1', 'seat'=>  '1'] ) }}"  class="w-6 h-6">
+                                <form method="POST" action="{{ route('cart.remove', ['screening' => $ticket->screening, 'seat'=>  $ticket->seat] ) }}"  class="w-6 h-6">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" name="minus" class="w-6 h-6">
