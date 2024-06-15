@@ -18,25 +18,24 @@
                 <td class="px-2 py-2 text-left">{{ $row }}</td>
                 @foreach ($seats as $seat)
                     <td class="px-2 py-2 text-left">
-                        <div class="flex items-center justify-between">
+                        <div class="flex items-center justify-start">
                             @if ($seat->isReserved($screeningId))
-                            <x-button
-                                element='a'
-                                href="{{ route('seats.show', ['seat' => $seat]) }}"
-                                text="{{ $seat->seat_number }}"
-                                type="primary"
-                            />
-                        @else
-                            <x-button
-                                element='a'
-                                href="#"
-                                text="{{ $seat->seat_number }}"
-                                type="danger"
-                            />
-                        @endif
+                                <x-button
+                                    element='a'
+                                    href="{{ route('seats.show', ['seat' => $seat]) }}"
+                                    text="{{ $seat->seat_number }}"
+                                    type="primary"
+                                />
+                            @else
+                                <x-button
+                                    element='a'
+                                    href="#"
+                                    text="{{ $seat->seat_number }}"
+                                    type="danger"
+                                />
+                            @endif
 
-
-                            <div class="flex flex-col">
+                            <div class="flex flex-col px-0.5">
                                 @isset($showEdit)
                                     @if ($showEdit)
                                         @can('update', $seat)
