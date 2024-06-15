@@ -45,13 +45,9 @@
                             selected="{{ Route::currentRouteName() == 'screenings.showscreenings' }}"
                             />
 
-
-
                         <!-- Menu Item: Movies -->
-                        <x-menus.menu-item content="Movies" href="#" selected="" />
+                        <x-menus.menu-item content="Movies" href="{{ route('movies.index')}}" selected="" />
 
-                        <!-- Menu Item: Genres -->
-                        <x-menus.menu-item content="Genres" href="#" selected="" />
 
                         <div class="grow"></div>
 
