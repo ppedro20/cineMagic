@@ -5,14 +5,14 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Purchase;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customer extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -45,7 +45,7 @@ class Customer extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id', 'id');
+        return $this->belongsTo(User::class, 'id', 'id')->withTrashed();
     }
 
     public function tickets(){

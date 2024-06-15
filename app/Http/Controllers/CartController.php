@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Seat;
 use App\Models\Ticket;
+use App\Models\Purchase;
 use App\Models\Screening;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Models\Configuration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\CartConfirmationFormRequest;
 
@@ -123,19 +127,13 @@ class CartController extends Controller
         } else {
             $purchase = new Purchase();
 			$purchase->fill($request->validated());
-            $purchase->customer_id = Auth::user()? Auth::user()->id : null;
-            if (!$purchase->customer_id) {
-                // User Not Registered
-                return back()
-                    ->with('alert-type', 'danger')
-                    ->with('alert-msg', "Student number does not exist on the database!");
-            }
+            $purchase->customer_id = Auth::user()?->id;
             $purchase->date = Carbon::today();
             $purchase->total_price = 0;
 
             $totalPrice = 0;
             $ignored = 0;
-            $configuration = Configuration::firts();
+            $configuration = Configuration::first();
             $date = Carbon::today();
             $insertTicket = [];
 
@@ -152,7 +150,7 @@ class CartController extends Controller
 
                     $insertTicket[] = [
                         'screening_id' => $item['screening']->id,
-                        'seat' => $item['seat']->id,
+                        'seat_id' => $item['seat']->id,
                         'price' =>$price
                     ];
 
@@ -186,11 +184,10 @@ class CartController extends Controller
                         $ticket = new Ticket();
                         $ticket->fill($t);
                         $ticket->purchase_id = $purchase->id;
-                        $ticket->qrcode_url = route('tickets.show', ['ticket' => $t]);
-                        $ticket->save();
+                        $ticket->save();// antes do qr code??
+                        $ticket->qrcode_url = route('home');// tickets.show, ['ticket' => $t]
+
                     }
-
-
                 });
                 $request->session()->forget('cart');
                 if ($ignored == 0) {

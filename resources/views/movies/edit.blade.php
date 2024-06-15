@@ -39,7 +39,6 @@
                         Click on "Save" button to store the information.
                     </p>
                 </header>
-
                 <form method="POST" action="{{ route('movies.update', ['movie' => $movie]) }}"
                     enctype="multipart/form-data">
                     @csrf

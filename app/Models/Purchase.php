@@ -53,7 +53,7 @@ class Purchase extends Model
     public function getReciept(Purchase $purchase){
 		if ($purchase->receipt_pdf_filename)
 			return Storage::response('pdf_purchase/'.$purchase->receipt_pdf_filename);
-		return null
+		return null;
 	}
 
 	public function getRecieptFullUrlAttribute(){

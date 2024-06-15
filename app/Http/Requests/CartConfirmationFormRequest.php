@@ -22,25 +22,19 @@ class CartConfirmationFormRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'student_number' => 'required|exists:students,number'
+        $rules = [
+            'customer_name' => 'required|string|min:3|max:255',
+            'customer_email' => 'required|email',
+            'nif' => 'nullable|string|digits:9',
+            'payment_type' => 'required|in:MBWAY,VISA,PAYPAL',
+            'receipt_pdf_file' => 'nullable|file|mimes:pdf'
         ];
-    }
+        $rules['payment_ref'] = match ($this->input('payment_type')) {
+            'VISA' => 'required|digits:16',
+            'MBWAY' => 'required|digits:9',
+            'PAYPAL' => 'required|email',
+        };
 
-    public function after(): array
-    {
-        return [
-            function (Validator $validator) {
-                if ($this->user()) {
-                    if ($this->user()->type == 'S') {
-                        // When the user is a student, the student_number must be his number
-                        $userStudentNumber = $this->user()?->student?->number;
-                        if ($this->student_number != $userStudentNumber) {
-                            $validator->errors()->add('student_number', "Your student number is $userStudentNumber");
-                        }
-                    }
-                }
-            }
-        ];
+        return $rules;
     }
 }

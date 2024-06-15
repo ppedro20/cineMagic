@@ -28,13 +28,14 @@ class PurchaseFormRequest extends FormRequest
             'customer_name' => 'required|string|min:3|max:255',
             'customer_email' => 'required|email'
             'nif' => 'nullable|string|digits:9',
-            'payment_type' => 'required|in:MBWAY, VISA, PAYPAL',
-            'receipt_pdf_file' => '',
+            'payment_type' => 'required|string|in:MBWAY, VISA, PAYPAL',
+            'receipt_pdf_file' => 'nullable|file|mimes:pdf',
         ];
         $rules['payment_ref'] = match ($this->input('payment_type')) {
-            'VISA' => 'required|max:20|regex:/^\d{16}-\d{3}$/',
+            'VISA' => 'required|digits:16',
             'MBWAY' => 'required|digits:9',
             'PAYPAL' => 'required|email',
         };
+        return $rules;
     }
 }

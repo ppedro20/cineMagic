@@ -13,8 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Movie extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
