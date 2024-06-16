@@ -12,7 +12,7 @@
                 <th class="px-2 py-2 text-left">Theater</th>
                 <th class="px-2 py-2 text-left">Date</th>
                 <th class="px-2 py-2 text-left">Starts at</th>
-                <td class="px-2 py-2 text-left">Occupation</td>
+                <th class="px-2 py-2 text-left">Occupation</th>
                 @isset($showView)
                     @if ($showView)
                         <th></th>

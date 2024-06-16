@@ -13,6 +13,7 @@ use App\Models\Configuration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\QRcodeGenerateController;
 use App\Http\Requests\CartConfirmationFormRequest;
 
@@ -189,11 +190,16 @@ class CartController extends Controller
                         $ticket->save();
 
                         /* TODO
-                        $ticket->qrcode_url = QRcodeGenerateController::store(route('tickets.show', ['ticket' => $ticket]), $ticket->id);
+                        $ticket->qrcode_url = route('tickets.show', ['ticket' => $ticket]);
                         $ticket->save();
                         */
                     }
                 });
+                $purchase->receipt_pdf_filename = PDFController::generatePDF($purchase);
+	            $purchase->save();
+
+
+
                 $request->session()->forget('cart');
                 if ($ignored == 0) {
                     return redirect()->route('home')

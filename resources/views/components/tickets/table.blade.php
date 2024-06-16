@@ -1,17 +1,16 @@
-@php
-    $config= App\Models\Configuration::first();
-    $total=0;
-    $price=Auth::User()?->customer? $config->ticket_price - $config->registered_customer_ticket_discount : $config->ticket_price;
-    foreach($tickets as $t){
-        $total+=$price;
-    }
-@endphp
-
 <div {{ $attributes }}>
     <table class="table-auto border-collapse w-full">
         <thead>
             <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
+                <th class="px-2 py-2 text-left">Ticket</th>
+                @isset($showCustomers)
+                    @if ($showCustomers)
+                        <th class="px-2 py-2 text-left">Customer Name</th>
+                        <th class="px-2 py-2 text-left">Email</th>
+                    @endif
+                @endisset
                 <th class="px-2 py-2 text-left">Movie</th>
+                <th class="px-2 py-2 text-left">Poster</th>
                 <th class="px-2 py-2 text-left">Seat</th>
                 <th class="px-2 py-2 text-left">Date</th>
                 <th class="px-2 py-2 text-left">Start at</th>
@@ -31,11 +30,21 @@
         <tbody>
             @foreach ($tickets as $ticket)
                 <tr class="border-b border-b-gray-400 dark:border-b-gray-500">
+                    <td class="px-2 py-2 text-left">{{ $ticket->id }}</td>
+                    @isset($showCustomers)
+                        @if ($showCustomers)
+                            <td class="px-2 py-2 text-left">{{$ticket->purchase->customer_name}}</td>
+                            <td class="px-2 py-2 text-left">{{$ticket->purchase->customer_email}}</td>
+                        @endif
+                    @endisset
                     <td class="px-2 py-2 text-left">{{ $ticket->screening->movie->title }}</td>
+                    <td class="px-2 py-2 text-left">
+                        <img class="md h-28" src="{{ $ticket->screening->movie->posterFullUrl }}" alt="Movie Poster" height="100px"/>
+                    </td>
                     <td class="px-2 py-2 text-left">{{ $ticket->seat->name}}</td>
                     <td class="px-2 py-2 text-left">{{ $ticket->screening->date }}</td>
                     <td class="px-2 py-2 text-left">{{ \Carbon\Carbon::parse($ticket->screening->start_time)->format('H:i')}}</td>
-                    <td class="px-2 py-2 text-left">{{ $price }}&#8364;</td>
+                    <td class="px-2 py-2 text-left">{{ $ticket->price }}&#8364;</td>
                     @if ($showStatus)
                         @if($ticket->isValid)
                             <th class="px-2 py-2 text-left">
@@ -55,7 +64,14 @@
                             </th>
                         @endif
                     @endif
-
+                    @isset($showRemoveFromCart)
+                        @if ($showRemoveFromCart)
+                            <td>
+                                <x-table.icon-minus class="px-0.5" method="delete"
+                                    action="{{ route('cart.remove', ['screening' => $ticket->screening,'seat' => $ticket->seat]) }}" />
+                            </td>
+                        @endif
+                    @endisset
                     @isset($showView)
                         @if ($showView)
                             <td>
@@ -76,8 +92,9 @@
                         <td class="px-2 py-2 text-left"></td>
                         <td class="px-2 py-2 text-left"></td>
                         <td class="px-2 py-2 text-left"></td>
+                        <td class="px-2 py-2 text-left"></td>
                         <td class="px-2 py-2 text-left">Total</td>
-                        <td class="px-2 py-2 text-left">{{ $total }}&#8364;</td>
+                        <td class="px-2 py-2 text-left">{{ $ticket->purchase->total_price }}&#8364;</td>
                     </tr>
                 @endif
             @endisset

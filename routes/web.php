@@ -1,18 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TheaterController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
 
 /* ----- PUBLIC ROUTES ----- */
 Route::view('/', 'home')->name('home');
+
+Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 
 // Movies
 Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
@@ -88,8 +92,17 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('tickets',[TicketController::class, 'index'])
         ->name('tickets.index');
+
     Route::get('tickets/{ticket}',[TicketController::class, 'show'])
         ->name('tickets.show');
+
+    Route::resource('purchases',PurchaseController::class)->only(['index', 'show']);
+    Route::get('purchases/{purchase}/receipt',[PurchaseController::class, 'showReciept'])
+        ->name('purchases.receipt');
+    Route::get('/pdf/{filename}', [PDFController::class, 'showPDF'])
+        ->name('pdf.show');
+
+
     Route::get('configurations',[ConfigurationController::class, 'edit'])
         ->name('configurations.edit');
 

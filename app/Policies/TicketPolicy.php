@@ -21,7 +21,10 @@ class TicketPolicy
      */
     public function view(User $user, Ticket $ticket): bool
     {
-        return true;
+        if ($user->type === 'A' || $user->id === $ticket->purchase->customer_id){
+            return true;
+        }
+        return false;
     }
 
     /**

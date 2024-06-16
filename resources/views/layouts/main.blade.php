@@ -53,12 +53,19 @@
                             />
 
                         @if (Auth::User()?->type === 'C')
-                            <!-- Menu Item: Screenigs -->
+                            <!-- Menu Item: Tickets -->
                             <x-menus.menu-item
-                            content="My Tickets"
-                            href="{{ route('tickets.index')}}"
-                            selected="{{ Route::currentRouteName() == 'tickets.index' }}"
-                            />
+                                content="My Tickets"
+                                href="{{ route('tickets.index')}}"
+                                selected="{{ Route::currentRouteName() == 'tickets.index' }}"
+                                />
+
+                            <!-- Menu Item: Purchases -->
+                            <x-menus.menu-item
+                                content="My Purchases"
+                                href="{{ route('purchases.index')}}"
+                                selected="{{ Route::currentRouteName() == 'purchases.index' }}"
+                                />
                         @endif
 
 

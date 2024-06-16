@@ -30,15 +30,15 @@ class Purchase extends Model
         'receipt_pdf_filename'
     ];
 
-    /**
-     * Get the customer associated with the Purchase
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function customer(): HasOne
-    {
-        return $this->hasOne(Customer::class)->withTrashed();
-    }
+   /**
+    * Get the customer associated with the Purchase
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\HasOne
+    */
+   public function customer(): HasOne
+   {
+       return $this->hasOne(customer::class, 'id', 'customer_id');
+   }
 
     /**
      * Get all of the tickets for the Purchase

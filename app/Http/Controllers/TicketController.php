@@ -20,14 +20,22 @@ class TicketController extends \Illuminate\Routing\Controller
 
     public function index(Request $request): View
     {
-        $userId = Auth::user()->id;
-        $tickets = Ticket::query()
-        ->whereHas('purchase', function($query) use ($userId) {
-            $query->where('customer_id', $userId);
-        })
-        ->with(['purchase', 'seat', 'screening'])
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+        $user = Auth::user();
+        $tickets = Ticket::query();
+
+        if ($user->type !== 'A'){
+            $tickets = $tickets->whereHas('purchase', function($query) use ($user) {
+                $query->where('customer_id', $user->Id);
+            })
+            ->with(['purchase', 'seat', 'screening'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        } else {
+            $tickets = $tickets
+            ->with(['purchase', 'seat', 'screening'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+        }
 
         return view('tickets.index', compact('tickets'));
     }

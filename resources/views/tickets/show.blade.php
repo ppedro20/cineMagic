@@ -45,18 +45,6 @@
 
                                 <x-field.input name="customer_email" type="email" label="Email" width="full" :readonly="true"
                                     value="{{ old('customer_email', $ticket->purchase->customer_email) }}" />
-
-                                    <div class="pb-6">
-                                        <x-field.image
-                                            name="poster_file"
-                                            label="QR code"
-                                            width="md"
-                                            :choosefile="false"
-                                            :readonly="true"
-                                            :deleteAllow="false"
-                                            :imageUrl="$ticket->screening->movie->posterFullUrl"/>
-                                    </div>
-
                             </div>
                         </div>
                     </div>

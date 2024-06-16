@@ -16,6 +16,7 @@
                     :showView="false"
                     :showStatus="false"
                     :showTotal="true"
+                    :showRemoveFromCart="true"
                     />
             </div>
             <div class="mt-12">

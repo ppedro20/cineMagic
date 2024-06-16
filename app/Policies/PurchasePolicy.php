@@ -13,7 +13,10 @@ class PurchasePolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        if ($user->type === 'A'){
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -21,7 +24,10 @@ class PurchasePolicy
      */
     public function view(User $user, Purchase $purchase): bool
     {
-        return true;
+        if ($user->type === 'A' || $user->id === $purchase->customer_id){
+            return true;
+        }
+        return false;
     }
 
     /**

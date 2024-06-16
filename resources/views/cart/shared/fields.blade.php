@@ -2,6 +2,7 @@
     $payment_options = [''=>'-', 'MBWAY' => 'MBWAY', 'VISA' => 'VISA', 'PAYPAL' => 'PAYPAL'];
 @endphp
 
+
 <div class="flex flex-wrap space-x-8">
 
     @if (Auth::User())
