@@ -17,47 +17,40 @@
                     <div class="px-4 py-5 sm:p-6">
                         <h1>Statistics</h1>
                     </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <dl>
-                            <dt class="text-sm leading-5 font-medium text-gray-500 truncate dark:text-gray-400">Total Users</dt>
-                            <dd class="mt-1 text-3xl leading-9 font-semibold text-indigo-600 dark:text-indigo-400">{{$totalAllUsers}}</dd>
-                        </dl>
+                    <div class="px-4 py-5 sm:p-6 flex">
+                        <div class="px-4 py-5 sm:p-6">
+                                <x-field.input name="total_users" label="Total Users" width="md" :readonly="true"
+                                    value="{{$totalAllUsers }}" />
+                        </div>
+                        <div class="px-4 py-5 sm:p-6">
+
+                                <x-field.input name="total_purchases" label="Total Purchases" width="md" :readonly="true"
+                                    value="{{$totalPurchases }}" />
+                        </div>
                     </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <dl>
-                            <dt class="text-sm leading-5 font-medium text-gray-500 truncate dark:text-gray-400">Total Purchases</dt>
-                            <dd class="mt-1 text-3xl leading-9 font-semibold text-indigo-600 dark:text-indigo-400">{{$totalPurchases}}</dd>
-                        </dl>
+                    <div class="px-4 py-5 sm:p-6 flex">
+                        <div class="px-4 py-5 sm:p-6">
+                                <x-field.input name="total_purchases" label="Month Purchases" width="md" :readonly="true"
+                                    value="{{$thisMonthPurchases }}" />
+                        </div>
+                        <div class="px-4 py-5 sm:p-6">
+                                <x-field.input name="today_purchases" label="Today Purchases" width="md" :readonly="true"
+                                    value="{{$todayPurchases }}" />
+                        </div>
                     </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <dl>
-                            <dt class="text-sm leading-5 font-medium text-gray-500 truncate dark:text-gray-400">Month Purchases</dt>
-                            <dd class="mt-1 text-3xl leading-9 font-semibold text-indigo-600 dark:text-indigo-400">{{$thisMonthPurchases}}</dd>
-                        </dl>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <dl>
-                            <dt class="text-sm leading-5 font-medium text-gray-500 truncate dark:text-gray-400">Today Purchases</dt>
-                            <dd class="mt-1 text-3xl leading-9 font-semibold text-indigo-600 dark:text-indigo-400">{{$todayPurchases}}</dd>
-                        </dl>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <dl>
-                            <dt class="text-sm leading-5 font-medium text-gray-500 truncate dark:text-gray-400">Most Watched Movie</dt>
-                            <dd class="mt-1 text-3xl leading-9 font-semibold text-indigo-600 dark:text-indigo-400">{{$mostWatchedFilm->title}} ({{$mostWatchedFilm->total}}) </dd>
-                        </dl>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <dl>
-                            <dt class="text-sm leading-5 font-medium text-gray-500 truncate dark:text-gray-400">Most Visited Theater</dt>
-                            <dd class="mt-1 text-3xl leading-9 font-semibold text-indigo-600 dark:text-indigo-400">{{$bestTheater->name}} ({{$bestTheater->total}})</dd>
-                        </dl>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <dl>
-                            <dt class="text-sm leading-5 font-medium text-gray-500 truncate dark:text-gray-400">Most Watched Genre</dt>
-                            <dd class="mt-1 text-3xl leading-9 font-semibold text-indigo-600 dark:text-indigo-400">{{$bestGenre->name}} ({{$bestGenre->total}})</dd>
-                        </dl>
+                    <div class="px-4 py-5 sm:p-6 flex">
+                        <div class="px-4 py-5 sm:p-6">
+                                <x-field.input name="most_watched_movie" label="Most Watched Movie" width="md" :readonly="true"
+                                    value="{{$mostWatchedFilm->title}} ({{$mostWatchedFilm->total}})" />
+                        </div>
+                        <div class="px-4 py-5 sm:p-6">
+                                <x-field.input name="most_visited_theater" label="Most Visited Theater" width="md" :readonly="true"
+                                    value="{{$bestTheater->name}} ({{$bestTheater->total}})" />
+                        </div>
+                        <div class="px-4 py-5 sm:p-6">
+                                <x-field.input name="total_purchases" label="Most Watched Genre" width="md" :readonly="true"
+                                    value="{{$bestGenre->name}} ({{$bestGenre->total}})" />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -21,11 +21,12 @@ class TicketController extends \Illuminate\Routing\Controller
     public function index(Request $request): View
     {
         $user = Auth::user();
+        $userId = $user->id;
         $ticketsQuery = Ticket::query();
 
-        if ($user->type !== 'A'){
-            $ticketsQuery->whereHas('purchase', function($query) use ($user) {
-                $query->where('customer_id', $user->Id);
+        if ($user->type === 'C'){
+            $ticketsQuery->whereHas('purchase', function($query) use ($userId) {
+                $query->where('customer_id', $userId);
             });
 
         }

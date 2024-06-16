@@ -14,6 +14,7 @@
                 <x-tickets.table
                     :tickets="$cart"
                     :showView="false"
+                    :showId="false"
                     :showStatus="false"
                     :showTotal="true"
                     :showRemoveFromCart="true"
