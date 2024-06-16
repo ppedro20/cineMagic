@@ -22,15 +22,15 @@ class PurchaseController extends \Illuminate\Routing\Controller
     public function index(Request $request): View
     {
         $user = Auth::user();
-        $purchases = Purchase::query();
+        $purchasesQuery = Purchase::query();
 
         if ($user->type !== 'A'){
-            $purchases = $purchases->where('customer_id', $user->id);
+            $purchasesQuery->where('customer_id', $user->id);
         }
 
         $filterByKeyword = $request->query('keyword');
         if ($filterByKeyword) {
-            $moviesQuery->where(function ($query) use ($filterByKeyword) {
+            $purchasesQuery->where(function ($query) use ($filterByKeyword) {
                 $query->where('customer_name', 'like', "%$filterByKeyword%")
                     ->orWhere('customer_email', 'like', "%$filterByKeyword%");
             });
@@ -38,15 +38,15 @@ class PurchaseController extends \Illuminate\Routing\Controller
 
         $filterByBefore = $request->query('before');
         if ($filterByBefore) {
-            $screeningsQuery->whereDate('date', '<', $filterByBefore);
+            $purchasesQuery->whereDate('date', '<', $filterByBefore);
         }
 
         $filterByAfter = $request->query('after');
         if ($filterByAfter) {
-            $screeningsQuery->whereDate('date', '>', $filterByAfter);
+            $purchasesQuery->whereDate('date', '>', $filterByAfter);
         }
 
-        $purchases = $purchases
+        $purchases = $purchasesQuery
                 ->with(['tickets', 'customer'])
                 ->orderBy('date', 'desc')
                 ->paginate(20);
@@ -54,7 +54,7 @@ class PurchaseController extends \Illuminate\Routing\Controller
 
         return view(
             'purchases.index',
-            compact('purchases')
+            compact('purchases', 'filterByKeyword', 'filterByBefore', 'filterByAfter')
         );
     }
 

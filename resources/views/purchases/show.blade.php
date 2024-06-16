@@ -16,17 +16,24 @@
                     <div class="grow mt-6 space-y-4">
                         <div class="flex gap-4">
                             <div class="flex flex-col w-full md:w-1/2 gap-6">
-                                <x-field.input name="customer_name" type="text" label="Name" width="full" :readonly="true"
-                                    value="{{ $purchase->customer_name }}" />
+                                @if (Auth::User()?->type === 'A')
+                                    <x-field.input name="customer_name" type="text" label="Name" width="full" :readonly="true"
+                                        value="{{ $purchase->customer_name }}" />
+
+                                    <x-field.input name="customer_email" type="email" label="Email" width="full" :readonly="true"
+                                        value="{{ $purchase->customer_email }}" />
+                                @endif
+
 
                                 <x-field.input name="nif" type="number" label="NIF" width="full" :readonly="true"
                                     value="{{ $purchase->nif ?? '-' }}" />
 
-                                <x-field.input name="customer_email" type="email" label="Email" width="full" :readonly="true"
-                                    value="{{ $purchase->customer_email }}" />
 
                                 <x-field.input name="payment_type" label="Payment Type" width="lg" :readonly="true"
                                     value="{{ $purchase->payment_type }}"/>
+
+                                <x-field.input name="total_price" label="Total Price" width="lg" :readonly="true"
+                                    value="{{ $purchase->total_price }}"/>
 
                             </div>
                             <div class="flex gap-4">
@@ -38,7 +45,7 @@
                         @if (Auth::User()?->type === 'A')
                             <x-tickets.table :tickets="$purchase->tickets"
                                 :showView="true"
-                                :showCustomers="true"
+                                :showCustomers="false"
                                 />
                         @else
                             <x-tickets.table :tickets="$purchase->tickets"
