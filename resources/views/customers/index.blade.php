@@ -16,7 +16,7 @@
                 <div class="flex items-center gap-4 mb-4">
                     <x-button
                         href="{{ route('customers.create') }}"
-                        text="Create a customer"
+                        text="Create a new customer"
                         type="success"/>
                 </div>
             @endcan
@@ -28,7 +28,7 @@
                     />
             </div>
             <div class="mt-4">
-                {{ $customers->links() }}
+                {{ $customers->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

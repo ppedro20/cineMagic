@@ -19,11 +19,6 @@
                         value="{{ old('name', $employee->name) }}"/>
         <x-field.input name="email" type="email" label="Email" :readonly="$readonly"
                         value="{{ old('email', $employee->email) }}"/>
-        <x-field.radiogroup name="gender" label="Gender" :readonly="$readonly"
-            value="{{ old('gender', $employee->gender) }}"
-            :options="['M' => 'Masculine', 'F' => 'Feminine']"/>
-        <x-field.checkbox name="admin" label="Administrator" :readonly="$adminReadonly"
-                        value="{{ old('admin', $employee->admin) }}"/>
     </div>
     <div class="pb-6">
         <x-field.image

@@ -19,14 +19,15 @@ use App\Http\Controllers\AdministrativeController;
 /* ----- PUBLIC ROUTES ----- */
 Route::view('/', 'home')->name('home');
 
-Route::get('/generate-pdf', [PDFController::class, 'generatePDF']);
 
-// Movies
+
+// Movie Public
 Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
     ->name('movies.showmovies');
 Route::resource('movies', MovieController::class)->only(['show']);
 
-// Screenings
+
+// Screening Public
 Route::get('screenings/showscreenings', [ScreeningController::class, 'showScreenings'])
     ->name('screenings.showscreenings');
 
@@ -57,69 +58,88 @@ Route::middleware('auth')->group(function () {
 /* ----- Verified users ----- */
 Route::middleware('auth', 'verified')->group(function () {
 
-
+    // Dashboard
     Route::get('/dashboard', function () {
         return view('dashboard');
        })->middleware(['auth', 'verified'])->name('dashboard');
 
+    // Profile
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
+    // Admin
     Route::delete('administratives/{administrative}/photo', [AdministrativeController::class, 'destroyPhoto'])
     ->name('administratives.photo.destroy')
     ->can('update', 'administrative');
+
     Route::resource('administratives', AdministrativeController::class);
 
+    // Employee
     Route::delete('employees/{employee}/photo', [EmployeeController::class, 'destroyPhoto'])
     ->name('employees.photo.destroy')
     ->can('update', 'employee');
+
     Route::resource('employees', EmployeeController::class);
 
-    Route::resource('customers', CustomerController::class);
+    // Customer
+    Route::delete('customers/{customer}/destroy-photo', [CustomerController::class, 'destroyPhoto'])
+    ->name('customers.destroyPhoto');
 
+    Route::resource('customers', CustomerController::class)->except(['create', 'store']);
+
+
+    // Genre
     Route::resource('genres', GenreController::class);
 
 
+    // Movie Private
     Route::delete('movies/{movie}/poster', [MovieController::class, 'destroyPoster'])
         ->name('movies.poster.destroy')
         ->can('update', 'movie');
 
     Route::resource('movies', MovieController::class)->except(['show']);
 
+
+    // Screening
     Route::resource('screenings', ScreeningController::class)->except(['show']);
 
+
+    // Theater
     Route::resource('theaters', TheaterController::class);
 
+
+    // Seats
     Route::get('/seats/create/{theaterId}', [SeatController::class, 'create'])
         ->name('seats.create');
 
     Route::resource('seats', SeatController::class)->except(['create']);
 
+
+    // Tickets
     Route::get('tickets',[TicketController::class, 'index'])
         ->name('tickets.index');
 
     Route::get('tickets/{ticket}',[TicketController::class, 'show'])
         ->name('tickets.show');
 
+    // Purchase
     Route::resource('purchases',PurchaseController::class)->only(['index', 'show']);
     Route::get('purchases/{purchase}/receipt',[PurchaseController::class, 'showReciept'])
         ->name('purchases.receipt');
+    // Pdf
     Route::get('/pdf/{filename}', [PDFController::class, 'showPDF'])
         ->name('pdf.show');
 
-
+    // Configuration
     Route::get('configurations',[ConfigurationController::class, 'edit'])
         ->name('configurations.edit');
-
 
     Route::put('configurations',[ConfigurationController::class, 'update'])
         ->name('configurations.update');
 });
 
 
-
 require __DIR__ . '/auth.php';
-

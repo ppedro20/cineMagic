@@ -48,77 +48,68 @@
                 @auth
                     @if(auth()->user()->type == 'A')
                     <!-- Dashboard -->
-                    @can('viewAny', App\Models\Administrative::class)
-                    <!-- Administrative -->
-
-                        @php
-                            $options = [];
-                            $options['All Administratives'] = route('administratives.index');
-                        @endphp
-
-                        @can('create', App\Models\Administrative::class)
+                        @can('viewAny', App\Models\Administrative::class)
+                        <!-- Administrative -->
                             @php
-                                $options['Add Administrative'] = route('administratives.create');
+                                $options = [];
+                                $options['All Administratives'] = route('administratives.index');
                             @endphp
+
+                            @can('create', App\Models\Administrative::class)
+                                @php
+                                    $options['Add Administrative'] = route('administratives.create');
+                                @endphp
+                            @endcan
+                            <x-menus.admin-group-menu-items title="Administratives" :options="$options">
+                                <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </x-menus.admin-group-menu-items>
                         @endcan
-                        <x-menus.admin-group-menu-items title="Administratives" :options="$options">
-                            <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </x-menus.admin-group-menu-items>
-                    @endcan
-                    @can('viewAny', App\Models\Employee::class)
-                    <!-- Administrative -->
 
-                        @php
-                            $options = [];
-                            $options['All Employees'] = route('employees.index');
-                        @endphp
-
-                        @can('create', App\Models\Employee::class)
+                        @can('viewAny', App\Models\Employee::class)
+                        <!-- Employee -->
                             @php
-                                $options['Add Employee'] = route('employees.create');
+                                $options = [];
+                                $options['All Employees'] = route('employees.index');
                             @endphp
+                             @can('create', App\Models\Administrative::class)
+                             @php
+                                 $options['Add Employee'] = route('employees.create');
+                             @endphp
+                         @endcan
+                            <x-menus.admin-group-menu-items title="Employees" :options="$options">
+                                <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </x-menus.admin-group-menu-items>
                         @endcan
-                        <x-menus.admin-group-menu-items title="Employees" :options="$options">
-                            <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </x-menus.admin-group-menu-items>
-                    @endcan
+
+                        @can('viewAny', App\Models\Customer::class)
+                        <!-- Customers -->
+                            @php
+                                $options = [];
+                                $options['All Customers'] = route('customers.index');
+                            @endphp
+                            <x-menus.admin-group-menu-items title="Customers" :options="$options">
+                                <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </x-menus.admin-group-menu-items>
+                        @endcan
                     @endif
-                    @can('viewAny', App\Models\Customer::class)
-                    <!-- Customers -->
-                        @php
-                            $options = [];
-                            $options['All Customers'] = route('customers.index');
-                        @endphp
-                    @if(auth()->user()->getTypeDescriptionAttribute() == 'Administrative')
-                        @can('create', App\Models\Customer::class)
-                            @php
-                                $options['Add Customer'] = route('customers.create');
-                            @endphp
-                        @endcan
-                    @endif
-                        <x-menus.admin-group-menu-items title="Customers" :options="$options">
-                            <svg class="w-6 h-6 text-gray-400 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H6Zm7.25-2.095c.478-.86.75-1.85.75-2.905a5.973 5.973 0 0 0-.75-2.906 4 4 0 1 1 0 5.811ZM15.466 20c.34-.588.535-1.271.535-2v-1a5.978 5.978 0 0 0-1.528-4H18a4 4 0 0 1 4 4v1a2 2 0 0 1-2 2h-4.535Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </x-menus.admin-group-menu-items>
-                    @endcan
-
                     @can('viewAny', App\Models\Genre::class)
                     <!-- Genre -->
                         @php

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header-title', 'List of Administratives')
+@section('header-title', 'List of Employees')
 
 @section('main')
     <div class="flex justify-center">

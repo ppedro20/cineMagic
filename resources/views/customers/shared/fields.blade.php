@@ -19,9 +19,6 @@
                         value="{{ old('name', $customer->name) }}"/>
         <x-field.input name="email" type="email" label="Email" :readonly="$readonly"
                         value="{{ old('email', $customer->email) }}"/>
-        <x-field.radiogroup name="gender" label="Gender" :readonly="$readonly"
-            value="{{ old('gender', $customer->gender) }}"
-            :options="['M' => 'Masculine', 'F' => 'Feminine']"/>
     </div>
     <div class="pb-6">
         <x-field.image
