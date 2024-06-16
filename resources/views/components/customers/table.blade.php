@@ -25,33 +25,21 @@
                     </td>
                     @if ($showView)
                         <td>
-                            @can('view', $customer)
-                                <x-table.icon-show class="ps-3 px-0.5"
-                                    href="{{ route('customers.show', ['customer' => $customer]) }}" />
-                            @else
-                                <x-table.icon-show class="ps-3 px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-show class="ps-3 px-0.5"
+                                href="{{ route('customers.show', ['customer' => $customer]) }}" />
                         </td>
                     @endif
                     @if ($showEdit)
                         <td>
-                            @can('update', $customer)
-                                <x-table.icon-edit class="px-0.5"
-                                    href="{{ route('customers.edit', ['customer' => $customer]) }}" />
-                            @else
-                                <x-table.icon-edit class="px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-edit class="px-0.5"
+                                href="{{ route('customers.edit', ['customer' => $customer]) }}" />
                         </td>
                     @endif
                     <!--TODO: block/unblock-->
                     @if ($showDelete)
                         <td>
-                            @can('delete', $customer)
-                                <x-table.icon-delete class="px-0.5"
-                                    action="{{ route('customers.destroy', ['customer' => $customer]) }}" />
-                            @else
-                                <x-table.icon-delete class="px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-delete class="px-0.5"
+                                action="{{ route('customers.destroy', ['customer' => $customer]) }}" />
                         </td>
                     @endif
                 </tr>

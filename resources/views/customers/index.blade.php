@@ -12,14 +12,6 @@
                 :name="$filterByName"
                 class="mb-6"
                 />
-            @can('create', App\Models\User::class)
-                <div class="flex items-center gap-4 mb-4">
-                    <x-button
-                        href="{{ route('customers.create') }}"
-                        text="Create a new customer"
-                        type="success"/>
-                </div>
-            @endcan
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">
                 <x-customers.table :customers="$customers"
                     :showView="true"

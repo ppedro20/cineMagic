@@ -8,19 +8,11 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
-                    @can('create', App\Models\User::class)
-                    <x-button
-                        href="{{ route('customers.create') }}"
-                        text="New"
-                        type="success"/>
-                    @endcan
-                    @can('view', $customer)
                     <x-button
                         href="{{ route('customers.show', ['customer' => $customer]) }}"
                         text="View"
                         type="info"/>
-                    @endcan
-                    @can('delete', $customer)
+
                     <form method="POST" action="{{ route('customers.destroy', ['customer' => $customer]) }}">
                         @csrf
                         @method('DELETE')
@@ -29,7 +21,6 @@
                             text="Delete"
                             type="danger"/>
                     </form>
-                    @endcan
                 </div>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">

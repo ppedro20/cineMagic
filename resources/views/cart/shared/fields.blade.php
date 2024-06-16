@@ -8,7 +8,7 @@
     @if (Auth::User())
         <div>
             <x-field.input name="customer_name" type="text" label="Name" width="lg" class hidden
-                value="{{ old('customer_name', Auth::User()->name) }}" />
+                value="{!! old('customer_name', Auth::User()->name) !!}" />
 
 
             <x-field.input name="customer_email" type="email" label="Email" width="lg" hidden

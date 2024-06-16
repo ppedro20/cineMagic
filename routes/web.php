@@ -72,21 +72,18 @@ Route::middleware('auth', 'verified')->group(function () {
 
     // Admin
     Route::delete('administratives/{administrative}/photo', [AdministrativeController::class, 'destroyPhoto'])
-    ->name('administratives.photo.destroy')
-    ->can('update', 'administrative');
+    ->name('administratives.photo.destroy');
 
     Route::resource('administratives', AdministrativeController::class);
 
     // Employee
     Route::delete('employees/{employee}/photo', [EmployeeController::class, 'destroyPhoto'])
-    ->name('employees.photo.destroy')
-    ->can('update', 'employee');
-
+    ->name('employees.photo.destroy');
     Route::resource('employees', EmployeeController::class);
 
     // Customer
-    Route::delete('customers/{customer}/destroy-photo', [CustomerController::class, 'destroyPhoto'])
-    ->name('customers.destroyPhoto');
+    Route::delete('customers/{customer}/photo', [EmployeeController::class, 'destroyPhoto'])
+    ->name('customers.photo.destroy');
 
     Route::resource('customers', CustomerController::class)->except(['create', 'store']);
 

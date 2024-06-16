@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Customer;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\CustomerFormRequest;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\CustomerFormRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CustomerController extends Controller
@@ -17,7 +18,7 @@ class CustomerController extends Controller
 
     public function __construct()
     {
-        //
+        //$this->authorizeResource(User::class, 'C');
     }
 
     public function index(Request $request): View{
@@ -48,17 +49,17 @@ class CustomerController extends Controller
         return view('customers.edit',compact('customer'));
     }
 
-    public function update(CustomerRequest $request){
+    public function update(CustomerFormRequest $request, Customer $customer){
         $validatedData = $request->validated();
-        $customer->type = 'C';
-        $customer->name = $validatedData['name'];
-        $customer->email = $validatedData['email'];
+        $user = $customer->user;
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+        $user->save();
 
+        $customer->nif = $validatedData['nif'];
+        $customer->payment_type = $validatedData['payment_type'];
+        $customer->payment_ref = $validatedData['payment_ref'];
         $customer->save();
-
-        $customer->customer->nif = $validatedData['nif'];
-        $customer->customer->payment_type = $validatedData['payment_type'];
-        $customer->customer->payment_ref = $validatedData['payment_ref'];
 
         if ($request->hasFile('photo_file')) {
             if (
@@ -73,7 +74,7 @@ class CustomerController extends Controller
         }
 
         $url = route('customers.show', ['customer' => $customer]);
-        $htmlMessage = "Customer <a href='$url'><u>{$customer->name}</u></a> has been updated successfully!";
+        $htmlMessage = "Customer <a href='$url'><u>{$user->name}</u></a> has been updated successfully!";
         return redirect()->route('customers.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
@@ -90,10 +91,14 @@ class CustomerController extends Controller
 
     public function destroy(User $customer): RedirectResponse
     {
+        $user = $customer;
+
+        $customer = $user->customer;
         $customer->delete();
+        $user->delete();
         return redirect()->route('customers.index')
             ->with('alert-type', 'success')
-            ->with('alert-msg', "Customer $customer->name has been deleted successfully!");
+            ->with('alert-msg', "Customer $user->name has been deleted successfully!");
     }
 
     public function destroyPhoto(User $customer): RedirectResponse
@@ -106,7 +111,7 @@ class CustomerController extends Controller
             $customer->save();
             return redirect()->back()
                 ->with('alert-type', 'success')
-                ->with('alert-msg', "Photo of customer {$customer->name} has been deleted.");
+                ->with('alert-msg', "Photo of customer {$customer->user->name} has been deleted.");
         }
         return redirect()->back();
     }

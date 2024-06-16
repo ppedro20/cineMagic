@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
+use Illuminate\Validation\Rule;
 
-class CartConfirmationFormRequest extends FormRequest
+class CustomerFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +23,17 @@ class CartConfirmationFormRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'customer_name' => 'required|string|min:3|max:255',
-            'customer_email' => 'required|email',
+            'name' => 'required|string|min:3|max:255',
+            'email' => 'required|email',
             'nif' => 'nullable|string|digits:9',
             'payment_type' => 'required|in:MBWAY,VISA,PAYPAL',
+            'photo_file' => 'sometimes|image|max:4096',
         ];
         $rules['payment_ref'] = match ($this->input('payment_type')) {
             'VISA' => 'required|digits:16',
             'MBWAY' => 'required|digits:9',
             'PAYPAL' => 'required|email',
         };
-
         return $rules;
     }
 }
