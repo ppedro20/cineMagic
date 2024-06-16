@@ -47,6 +47,16 @@ class CustomerPolicy
         return true;
     }
 
+    public function block(User $user, Customer $Customer): bool
+    {
+        return true;
+    }
+
+    public function unblock(User $user, Customer $Customer): bool
+    {
+        return true;
+    }
+
     /**
      * Determine whether the user can restore the model.
      */

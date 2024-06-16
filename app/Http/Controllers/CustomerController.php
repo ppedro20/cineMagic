@@ -101,6 +101,24 @@ class CustomerController extends Controller
             ->with('alert-msg', "Customer $user->name has been deleted successfully!");
     }
 
+    public function block(User $customer): RedirectResponse
+    {
+        $customer->blocked = true;
+        $customer->save();
+        return redirect()->back()
+            ->with('alert-type', 'success')
+            ->with('alert-msg', "Customer $customer->name has been blocked successfully!");
+    }
+
+    public function unblock(User $customer): RedirectResponse
+    {
+        $customer->blocked = false;
+        $customer->save();
+        return redirect()->back()
+            ->with('alert-type', 'success')
+            ->with('alert-msg', "Customer $customer->name has been unblocked successfully!");
+    }
+
     public function destroyPhoto(User $customer): RedirectResponse
     {
         if ($customer->photo_filename) {

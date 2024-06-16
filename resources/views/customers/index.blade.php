@@ -17,6 +17,8 @@
                     :showView="true"
                     :showEdit="true"
                     :showDelete="true"
+                    :showBlock="true"
+                    :showUnblock="true"
                     />
             </div>
             <div class="mt-4">

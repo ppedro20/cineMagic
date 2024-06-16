@@ -51,4 +51,6 @@ class Customer extends Model
     public function tickets(){
         return $this -> hasMany(Bilhete:: class, 'customer_id');
     }
+
+
 }

@@ -51,6 +51,8 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    
+
     /**
      * Get the customer associated with the User
      *
