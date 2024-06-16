@@ -12,6 +12,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
+use App\Http\Controllers\ProfileController;
 
 /* ----- PUBLIC ROUTES ----- */
 Route::view('/', 'home')->name('home');
