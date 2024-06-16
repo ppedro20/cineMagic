@@ -19,7 +19,7 @@
                 <form method="POST" action="{{ route('administratives.store') }}"
                     enctype="multipart/form-data">
                     @csrf
-                    @include('administratives.shared.fields', ['mode' => 'create'])
+                    @include('administratives.shared.fields-password', ['mode' => 'create'])
                     <div class="flex mt-6">
                         <x-button element="submit" type="dark" text="Save new administrative" class="uppercase"/>
                     </div>

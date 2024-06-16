@@ -63,37 +63,26 @@ class CustomerController extends Controller
 
         if ($request->hasFile('photo_file')) {
             if (
-                $customer->photo_filename &&
-                Storage::fileExists('public/photos/' . $customer->photo_filename)
+                $user->photo_filename &&
+                Storage::fileExists('public/photos/' . $user->photo_filename)
             ) {
-                Storage::delete('public/photos/' . $customer->photo_filename);
+                Storage::delete('public/photos/' . $user->photo_filename);
             }
             $path = $request->photo_file->store('public/photos');
-            $customer->photo_filename = basename($path);
-            $customer->save();
+            $user->photo_filename = basename($path);
+            $user->save();
         }
 
-        $url = route('customers.show', ['customer' => $customer]);
-        $htmlMessage = "Customer <a href='$url'><u>{$user->name}</u></a> has been updated successfully!";
-        return redirect()->route('customers.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
 
-        if ($request->user()->can('viewAny', User::class)) {
-            return redirect()->route('customers.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
-        }
+        $htmlMessage = "Customer <u>{$user->name}</u> has been updated successfully!";
         return redirect()->back()
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
     }
 
-    public function destroy(User $customer): RedirectResponse
+    public function destroy(Customer $customer): RedirectResponse
     {
-        $user = $customer;
-
-        $customer = $user->customer;
+        $user = $customer->user;
         $customer->delete();
         $user->delete();
         return redirect()->route('customers.index')
@@ -101,17 +90,18 @@ class CustomerController extends Controller
             ->with('alert-msg', "Customer $user->name has been deleted successfully!");
     }
 
-    public function destroyPhoto(User $customer): RedirectResponse
+    public function destroyPhoto(Customer $customer): RedirectResponse
     {
-        if ($customer->photo_filename) {
-            if (Storage::fileExists('public/photos/' . $customer->photo_filename)) {
-                Storage::delete('public/photos/' . $customer->photo_filename);
+        $user = $customer->user;
+        if ($user->photo_filename) {
+            if (Storage::fileExists('public/photos/' . $user->photo_filename)) {
+                Storage::delete('public/photos/' . $user->photo_filename);
             }
-            $customer->photo_filename = null;
-            $customer->save();
+            $user->photo_filename = null;
+            $user->save();
             return redirect()->back()
                 ->with('alert-type', 'success')
-                ->with('alert-msg', "Photo of customer {$customer->user->name} has been deleted.");
+                ->with('alert-msg', "Photo of customer {$user->name} has been deleted.");
         }
         return redirect()->back();
     }

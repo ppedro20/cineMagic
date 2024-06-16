@@ -1,6 +1,7 @@
 @php
     $mode = $mode ?? 'edit';
     $readonly = $mode == 'show';
+    $choosefile = !$readonly;
 @endphp
 
 <div class="flex flex-wrap space-x-8">
@@ -15,9 +16,10 @@
             name="photo_file"
             label="Photo"
             width="md"
+            :choosefile="$choosefile"
             :readonly="$readonly"
             deleteTitle="Delete Photo"
-            :deleteAllow="($mode == 'edit') && ($employee->photo_url)"
+            :deleteAllow="($mode == 'edit') && ($employee->photo_filename)"
             deleteForm="form_to_delete_photo"
             :imageUrl="$employee->photoFullUrl"/>
     </div>

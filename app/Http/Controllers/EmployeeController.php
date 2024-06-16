@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
@@ -51,17 +52,18 @@ class EmployeeController extends \Illuminate\Routing\Controller
     public function create(): View
     {
         $employee = new User();
+        $employee->type = 'E';
         return view('employees.create',compact('employee'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.(Auth::User()?->id),
             'password' => ['required', 'confirmed', Password::defaults()],
+            'photo_file' => 'sometimes|image|max:4096',
         ]);
-
 
         $newEmployee  = User::create([
             'name' => $request->name,
@@ -69,7 +71,15 @@ class EmployeeController extends \Illuminate\Routing\Controller
             'password' => Hash::make($request->password),
             'type' => 'E'
         ]);
+
+        if ($request->hasFile('photo_file')) {
+            $path = $request->photo_file->store('public/photos');
+            $newEmployee->photo_filename = basename($path);
+            $newEmployee->save();
+        }
         $newEmployee->sendEmailVerificationNotification();
+
+
         $url = route('employees.show', ['employee' => $newEmployee]);
         $htmlMessage = "Employee <a href='$url'><u>{$newEmployee->name}</u></a> ({$newEmployee->email}) has been created successfully!";
         return redirect()->route('employees.index')

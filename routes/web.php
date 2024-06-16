@@ -82,7 +82,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('employees', EmployeeController::class);
 
     // Customer
-    Route::delete('customers/{customer}/photo', [EmployeeController::class, 'destroyPhoto'])
+    Route::delete('customers/{customer}/photo', [CustomerController::class, 'destroyPhoto'])
     ->name('customers.photo.destroy');
 
     Route::resource('customers', CustomerController::class)->except(['create', 'store']);

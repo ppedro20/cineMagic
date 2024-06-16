@@ -1,16 +1,7 @@
 @php
     $mode = $mode ?? 'edit';
     $readonly = $mode == 'show';
-    $adminReadonly = $readonly;
-    if (!$adminReadonly) {
-        if ($mode == 'create') {
-            $adminReadonly = Auth::user()?->cannot('createAdmin', App\Models\User::class);
-        } elseif ($mode == 'edit') {
-            $adminReadonly = Auth::user()?->cannot('updateAdmin', $administrative);
-        } else {
-            $adminReadonly = true;
-        }
-    }
+    $choosefile = !$readonly;
 @endphp
 
 <div class="flex flex-wrap space-x-8">
@@ -25,9 +16,10 @@
             name="photo_file"
             label="Photo"
             width="md"
+            :choosefile="$choosefile"
             :readonly="$readonly"
             deleteTitle="Delete Photo"
-            :deleteAllow="($mode == 'edit') && ($administrative->photo_url)"
+            :deleteAllow="($mode == 'edit') && ($administrative->photo_filename)"
             deleteForm="form_to_delete_photo"
             :imageUrl="$administrative->photoFullUrl"/>
     </div>

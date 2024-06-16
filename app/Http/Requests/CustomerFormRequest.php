@@ -24,7 +24,7 @@ class CustomerFormRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|min:3|max:255',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email,'.($this->customer?$this->customer->id:null),
             'nif' => 'nullable|string|digits:9',
             'payment_type' => 'required|in:MBWAY,VISA,PAYPAL',
             'photo_file' => 'sometimes|image|max:4096',

@@ -23,32 +23,20 @@
                     </td>
                     @if ($showView)
                         <td>
-                            @can('view', $administrative)
-                                <x-table.icon-show class="ps-3 px-0.5"
-                                    href="{{ route('administratives.show', ['administrative' => $administrative]) }}" />
-                            @else
-                                <x-table.icon-show class="ps-3 px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-show class="ps-3 px-0.5"
+                                href="{{ route('administratives.show', ['administrative' => $administrative]) }}" />
                         </td>
                     @endif
                     @if ($showEdit)
                         <td>
-                            @can('update', $administrative)
-                                <x-table.icon-edit class="px-0.5"
-                                    href="{{ route('administratives.edit', ['administrative' => $administrative]) }}" />
-                            @else
-                                <x-table.icon-edit class="px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-edit class="px-0.5"
+                                href="{{ route('administratives.edit', ['administrative' => $administrative]) }}" />
                         </td>
                     @endif
                     @if ($showDelete)
                         <td>
-                            @can('delete', $administrative)
-                                <x-table.icon-delete class="px-0.5"
-                                    action="{{ route('administratives.destroy', ['administrative' => $administrative]) }}" />
-                            @else
-                                <x-table.icon-delete class="px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-delete class="px-0.5"
+                                action="{{ route('administratives.destroy', ['administrative' => $administrative]) }}" />
                         </td>
                     @endif
                 </tr>

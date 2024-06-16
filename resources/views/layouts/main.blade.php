@@ -102,10 +102,8 @@
                                     <hr>
                                     <x-menus.submenu-item content="Profile" selectable="0" :href="match (Auth::user()->type) {
                                         'A' => route('administratives.edit', ['administrative' => Auth::user()]),
-                                        'E' => route('home'),
-                                        'C' => route('home')
-                                        //'E' => route('employee.edit', ['employee' => Auth::user()]),
-                                        //'C' => route('customer.edit', ['customer' => Auth::user()])
+                                        'E' => route('employees.edit', ['employee' => Auth::user()]),
+                                        'C' => route('customers.edit', ['customer' => Auth::user()])
                                     }" />
                                     <x-menus.submenu-item content="Change Password" selectable="0"
                                         href="{{ route('profile.edit.password') }}" />

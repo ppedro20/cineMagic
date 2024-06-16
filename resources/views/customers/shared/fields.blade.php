@@ -1,16 +1,7 @@
 @php
     $mode = $mode ?? 'edit';
     $readonly = $mode == 'show';
-    $adminReadonly = $readonly;
-    if (!$adminReadonly) {
-        if ($mode == 'create') {
-            $adminReadonly = Auth::user()?->cannot('createCustomer', App\Models\User::class);
-        } elseif ($mode == 'edit') {
-            $adminReadonly = Auth::user()?->cannot('updateCustomer', $customer);
-        } else {
-            $adminReadonly = true;
-        }
-    }
+    $choosefile = !$readonly;
 
     $payment_options = [''=>'-', 'MBWAY' => 'MBWAY', 'VISA' => 'VISA', 'PAYPAL' => 'PAYPAL'];
 @endphp
@@ -37,9 +28,10 @@
             name="photo_file"
             label="Photo"
             width="md"
+            :choosefile="$choosefile"
             :readonly="$readonly"
             deleteTitle="Delete Photo"
-            :deleteAllow="($mode == 'edit') && ($customer->photo_url)"
+            :deleteAllow="($mode == 'edit') && ($customer->photo_filename)"
             deleteForm="form_to_delete_photo"
             :imageUrl="$customer->photoFullUrl"/>
     </div>

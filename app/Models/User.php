@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Customer;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -63,8 +64,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getPhotoFullUrlAttribute()
     {
-        if ($this->photo_url && Storage::exists("public/photos/{$this->photo_url}")) {
-            return asset("storage/photos/{$this->photo_url}");
+        if ($this->photo_filename && Storage::exists("public/photos/{$this->photo_filename}")) {
+            return asset("storage/photos/{$this->photo_filename}");
         } else {
             return asset("storage/photos/anonymous.jpg");
         }

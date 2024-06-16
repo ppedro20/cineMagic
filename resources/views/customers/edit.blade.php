@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends(Auth::user()?->type !== 'A'? 'layouts.main':'layouts.admin')
 
 @section('header-title', 'Customer "' . $customer->name . '"')
 
@@ -8,24 +8,33 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
-                    <x-button
-                        href="{{ route('customers.show', ['customer' => $customer]) }}"
-                        text="View"
-                        type="info"/>
-
-                    <form method="POST" action="{{ route('customers.destroy', ['customer' => $customer]) }}">
-                        @csrf
-                        @method('DELETE')
+                    @if (Auth::user()?->type === 'A')
                         <x-button
-                            element="submit"
-                            text="Delete"
-                            type="danger"/>
-                    </form>
+                            href="{{ route('customers.show', ['customer' => $customer]) }}"
+                            text="View"
+                            type="info"/>
+
+                        <form method="POST" action="{{ route('customers.destroy', ['customer' => $customer]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <x-button
+                                element="submit"
+                                text="Delete"
+                                type="danger"/>
+                        </form>
+                    @endif
+
                 </div>
                 <header>
+                    @if (Auth::user()?->type === 'A')
+                        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                            Edit customer "{{ $customer->name }}"
+                        </h2>
+                    @else
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                        Edit customer "{{ $customer->name }}"
+                        Edit Your Profile
                     </h2>
+                    @endif
                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-300  mb-6">
                         Click on "Save" button to store the information.
                     </p>

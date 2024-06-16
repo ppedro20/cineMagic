@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\AdministrativeFormRequest;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Password;
+use App\Http\Requests\AdministrativeFormRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AdministrativeController extends \Illuminate\Routing\Controller
@@ -52,29 +55,30 @@ class AdministrativeController extends \Illuminate\Routing\Controller
         return view('administratives.create',compact('administrative'));
     }
 
-    public function store(AdministrativeFormRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
-        $validatedData = $request->validated();
-        $newAdministrative = new User();
-        $newAdministrative->type = 'A';
-        $newAdministrative->name = $validatedData['name'];
-        $newAdministrative->email = $validatedData['email'];
-        // Only sets admin field if it has permission  to do it.
-        // Otherwise, admin is false
-        $newAdministrative->admin = $request->user()?->can('createAdmin', User::class)
-            ? $validatedData['admin']
-            : 0;
-        $newAdministrative->gender = $validatedData['gender'];
-        // Initial password is always 123
-        $newAdministrative->password = bcrypt('123');
-        $newAdministrative->save();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,'.(Auth::User()?->id),
+            'password' => ['required', 'confirmed', Password::defaults()],
+            'photo_file' => 'sometimes|image|max:4096',
+        ]);
+
+        $newAdministrative = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => 'A'
+        ]);
 
         if ($request->hasFile('photo_file')) {
             $path = $request->photo_file->store('public/photos');
-            $newAdministrative->photo_url = basename($path);
+            $newAdministrative->photo_filename = basename($path);
             $newAdministrative->save();
         }
         $newAdministrative->sendEmailVerificationNotification();
+
+
         $url = route('administratives.show', ['administrative' => $newAdministrative]);
         $htmlMessage = "Administrative <a href='$url'><u>{$newAdministrative->name}</u></a> has been created successfully!";
         return redirect()->route('administratives.index')
@@ -90,56 +94,40 @@ class AdministrativeController extends \Illuminate\Routing\Controller
     public function update(AdministrativeFormRequest $request, User $administrative): RedirectResponse
     {
         $validatedData = $request->validated();
-        $administrative->type = 'A';
         $administrative->name = $validatedData['name'];
         $administrative->email = $validatedData['email'];
-        // Only updates admin field if it has permission  to do it.
-        // Otherwise, do not change it (ignore it)
-        if ($request->user()?->can('updateAdmin', $administrative)) {
-            $administrative->admin = $validatedData['admin'];
-        }
-        $administrative->gender = $validatedData['gender'];
+        $administrative->type = 'A';
         $administrative->save();
+
         if ($request->hasFile('photo_file')) {
-            // Delete previous file (if any)
-            if (
-                $administrative->photo_url &&
-                Storage::fileExists('public/photos/' . $administrative->photo_url)
-            ) {
-                Storage::delete('public/photos/' . $administrative->photo_url);
+            if ( $administrative->photo_filename && Storage::fileExists('public/photos/' . $administrative->photo_filename)) {
+                // Delete previous file (if any)
+                Storage::delete('public/photos/' . $administrative->photo_filename);
             }
+
             $path = $request->photo_file->store('public/photos');
-            $administrative->photo_url = basename($path);
+            $administrative->photo_filename = basename($path);
             $administrative->save();
         }
+
+
         $url = route('administratives.show', ['administrative' => $administrative]);
         $htmlMessage = "Administrative <a href='$url'><u>{$administrative->name}</u></a> has been updated successfully!";
         return redirect()->route('administratives.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
-
-        if ($request->user()->can('viewAny', User::class)) {
-            return redirect()->route('administrative.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
-        }
-        return redirect()->back()
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
-
     }
 
     public function destroy(User $administrative): RedirectResponse
     {
         try {
-            $url = route('administratives.show', ['administrative' => $administrative]);
-            $fileToDelete = $administrative->photo_url;
-            $administrative->delete();
-            if ($fileToDelete) {
-                if (Storage::fileExists('public/photos/' . $fileToDelete)) {
-                    Storage::delete('public/photos/' . $fileToDelete);
+            if ($administrative->photo_filename) {
+                if (Storage::fileExists('public/photos/' . $administrative->photo_filename)) {
+                    Storage::delete('public/photos/' . $administrative->photo_filename);
                 }
             }
+            $administrative->delete();
+
             $alertType = 'success';
             $alertMsg = "Administrative {$administrative->name} has been deleted successfully!";
         } catch (\Exception $error) {
@@ -155,11 +143,11 @@ class AdministrativeController extends \Illuminate\Routing\Controller
 
     public function destroyPhoto(User $administrative): RedirectResponse
     {
-        if ($administrative->photo_url) {
-            if (Storage::fileExists('public/photos/' . $administrative->photo_url)) {
-                Storage::delete('public/photos/' . $administrative->photo_url);
+        if ($administrative->photo_filename) {
+            if (Storage::fileExists('public/photos/' . $administrative->photo_filename)) {
+                Storage::delete('public/photos/' . $administrative->photo_filename);
             }
-            $administrative->photo_url = null;
+            $administrative->photo_filename = null;
             $administrative->save();
             return redirect()->back()
                 ->with('alert-type', 'success')

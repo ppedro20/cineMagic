@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AdministrativeFormRequest extends FormRequest
+class EmployeeFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class AdministrativeFormRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'require|email|unique:users,email,'.($this->administrative?$this->administrative->id:null),
-            'gender' => 'required|in:M,F',
-            'admin' => 'required|boolean',
+            'email' => 'required|email|unique:users,email,'.($this->employee?$this->employee->id:null),
             'photo_file' => 'sometimes|image|max:4096', // maxsize = 4Mb
         ];
     }
