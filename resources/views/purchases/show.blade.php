@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends(Auth::User()?->type === 'A'?'layouts.admin':'layouts.main')
 
 @section('header-title', 'Purchase '.$purchase->id)
 
@@ -16,25 +16,36 @@
                     <div class="grow mt-6 space-y-4">
                         <div class="flex gap-4">
                             <div class="flex flex-col w-full md:w-1/2 gap-6">
-                                <div> Name: {{ $purchase->customer_name }} </div>
-                    <div> Email: {{ $purchase->customer_email }} </div>
-                    <div> NIF:{{$purchase->nif ?? '-' }} </div>
-                    <div> Payment Type:{{$purchase->payment_type}} </div>
-
                                 <x-field.input name="customer_name" type="text" label="Name" width="full" :readonly="true"
-                                    value="{{ old('customer_name',  $purchase->purchase->customer_name) }}" />
+                                    value="{{ $purchase->customer_name }}" />
 
-                                <x-field.input name="nif" type="number" label="NIF (optional)" width="full" :readonly="true"
-                                    value="{{ old('nif', $purchase->purchase?->nif) }}" />
+                                <x-field.input name="nif" type="number" label="NIF" width="full" :readonly="true"
+                                    value="{{ $purchase->nif ?? '-' }}" />
 
                                 <x-field.input name="customer_email" type="email" label="Email" width="full" :readonly="true"
-                                    value="{{ old('customer_email', $purchase->purchase->customer_email) }}" />
-                                    <x-field.input name="customer_email" type="email" label="Email" width="full" :readonly="true"
-                                    value="{{ old('customer_email', $purchase->purchase->customer_email) }}" />
+                                    value="{{ $purchase->customer_email }}" />
 
+                                <x-field.input name="payment_type" label="Payment Type" width="lg" :readonly="true"
+                                    value="{{ $purchase->payment_type }}"/>
 
                             </div>
+                            <div class="flex gap-4">
+                            </div>
                         </div>
+                        <h3 class="pt-16 pb-4 text-2xl font-medium text-gray-900 dark:text-gray-100">
+                            Tickets
+                        </h3>
+                        @if (Auth::User()?->type === 'A')
+                            <x-tickets.table :tickets="$purchase->tickets"
+                                :showView="true"
+                                :showCustomers="true"
+                                />
+                        @else
+                            <x-tickets.table :tickets="$purchase->tickets"
+                                :showView="true"
+                                :showStatus="true"
+                                />
+                        @endif
                     </div>
                 </div>
             </section>
