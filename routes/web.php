@@ -15,6 +15,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
+use App\Http\Controllers\StatisticsController;
 
 /* ----- PUBLIC ROUTES ----- */
 Route::view('/', 'home')->name('home');
@@ -62,6 +63,10 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
        })->middleware(['auth', 'verified'])->name('dashboard');
+
+    // Statistics
+    Route::get('/statistics', [StatisticsController::class, 'index'])
+        ->name('statistics.index');
 
     // Profile
     Route::middleware('auth')->group(function () {
@@ -136,6 +141,8 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::put('configurations',[ConfigurationController::class, 'update'])
         ->name('configurations.update');
+
+
 });
 
 
