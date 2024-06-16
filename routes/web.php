@@ -13,6 +13,7 @@ use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CustomerController;
 
 /* ----- PUBLIC ROUTES ----- */
 Route::view('/', 'home')->name('home');
@@ -72,6 +73,8 @@ Route::middleware('auth', 'verified')->group(function () {
 
     //Admnistrative resource routes are protected by AdministrativePolicy on the controller
     Route::resource('administratives', AdministrativeController::class);
+
+    Route::resource('customers', CustomerController::class);
 
     Route::resource('genres', GenreController::class);
 
