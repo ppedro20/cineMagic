@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use App\Models\User;
 use Illuminate\View\View;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\EmployeeFormRequest;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rules\Password;
+use App\Http\Requests\EmployeeFormRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class EmployeeController extends \Illuminate\Routing\Controller
@@ -45,12 +48,18 @@ class EmployeeController extends \Illuminate\Routing\Controller
         return view('employees.show',compact('employee'));
     }
 
+    public function create(): View
+    {
+        $employee = new User();
+        return view('employees.create',compact('employee'));
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
 
@@ -61,9 +70,9 @@ class EmployeeController extends \Illuminate\Routing\Controller
             'type' => 'E'
         ]);
         $newEmployee->sendEmailVerificationNotification();
-        $url = route('employee.show', ['employee' => $newEmployee]);
+        $url = route('employees.show', ['employee' => $newEmployee]);
         $htmlMessage = "Employee <a href='$url'><u>{$newEmployee->name}</u></a> ({$newEmployee->email}) has been created successfully!";
-        return redirect()->route('genres.index')
+        return redirect()->route('employees.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
     }

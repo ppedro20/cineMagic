@@ -6,4 +6,4 @@
                 :readonly="$readonly || ($mode == 'edit')"
                 value="{{ old('code', $genre->code) }}"/>
 <x-field.input name="name" label="Name" :readonly="$readonly"
-                value="{{ old('name', $genre->name) }}"/>
+                value="{!! old('name', $genre->name) !!}"/>

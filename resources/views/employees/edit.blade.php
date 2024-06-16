@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('header-title', 'Administrative "' . $employee->name . '"')
+@section('header-title', 'Employee "' . $employee->name . '"')
 
 @section('main')
 <div class="flex flex-col space-y-6">

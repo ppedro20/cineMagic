@@ -20,7 +20,7 @@
         <x-field.input name="name" label="Name" :readonly="$readonly"
                         value="{!! old('name', $customer->name) !!}"/>
         <x-field.input name="email" type="email" label="Email" :readonly="$readonly"
-                        value="{{ old('email', $customer->email) }}"/>
+                        value="{!! old('email', $customer->email) !!}"/>
         <x-field.input name="nif" type="number" label="NIF (optional)" width="lg" :readonly="$readonly"
                 value="{{ old('nif', $customer->customer?->nif) }}" />
 

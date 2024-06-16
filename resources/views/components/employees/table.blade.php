@@ -23,32 +23,20 @@
                     </td>
                     @if ($showView)
                         <td>
-                            @can('view', $employee)
-                                <x-table.icon-show class="ps-3 px-0.5"
-                                    href="{{ route('employees.show', ['employee' => $employee]) }}" />
-                            @else
-                                <x-table.icon-show class="ps-3 px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-show class="ps-3 px-0.5"
+                                href="{{ route('employees.show', ['employee' => $employee]) }}" />
                         </td>
                     @endif
                     @if ($showEdit)
                         <td>
-                            @can('update', $employee)
-                                <x-table.icon-edit class="px-0.5"
-                                    href="{{ route('employees.edit', ['employee' => $employee]) }}" />
-                            @else
-                                <x-table.icon-edit class="px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-edit class="px-0.5"
+                                href="{{ route('employees.edit', ['employee' => $employee]) }}" />
                         </td>
                     @endif
                     @if ($showDelete)
                         <td>
-                            @can('delete', $employee)
-                                <x-table.icon-delete class="px-0.5"
-                                    action="{{ route('employees.destroy', ['employee' => $employee]) }}" />
-                            @else
-                                <x-table.icon-delete class="px-0.5" :enabled="false" />
-                            @endcan
+                            <x-table.icon-delete class="px-0.5"
+                                action="{{ route('employees.destroy', ['employee' => $employee]) }}" />
                         </td>
                     @endif
                 </tr>
