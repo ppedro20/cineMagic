@@ -41,16 +41,16 @@
                                 href="{{ route('customers.edit', ['customer' => $customer]) }}" />
                         </td>
                     @endif
-                    @if ($showBlock)
-                        <td>
-                            <x-table.icon-block class="px-0.5"
-                                action="{{ $customer->blocked = true; }}" />
-                        </td>
-                    @endif
                     @if ($showUnblock)
                         <td>
                             <x-table.icon-unblock class="px-0.5"
                                 action="{{ $customer->blocked = false; }}" />
+                        </td>
+                    @endif
+                    @if ($showBlock)
+                        <td>
+                            <x-table.icon-block class="px-0.5"
+                                action="{{ $customer->blocked = true; }}" />
                         </td>
                     @endif
                     @if ($showDelete)
