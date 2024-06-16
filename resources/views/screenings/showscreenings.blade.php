@@ -24,7 +24,7 @@
                     />
             </div>
             <div class="mt-4">
-                {{ $screenings->links() }}
+                {{ $screenings->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

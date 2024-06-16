@@ -8,11 +8,20 @@
                     shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">
                 @if (Auth::User()?->type !== 'A')
-                    <x-purchases.filter-card :filterAction="route('purchases.index')" :resetUrl="route('purchases.index')" :before="$filterByBefore" :after="$filterByAfter"
-                        class="mb-6" />
+                    <x-purchases.filter-card
+                    :filterAction="route('purchases.index')"
+                    :resetUrl="route('purchases.index')"
+                    :before="$filterByBefore"
+                    :after="$filterByAfter"
+                    class="mb-6" />
                 @else
-                    <x-purchases.filter-card :filterAction="route('purchases.index')" :resetUrl="route('purchases.index')" :showKeyword="true" :keyword="$filterByKeyword"
-                        :before="$filterByBefore" :after="$filterByAfter" class="mb-6" />
+                    <x-purchases.filter-card
+                    :filterAction="route('purchases.index')"
+                    :resetUrl="route('purchases.index')"
+                    :showKeyword="true" :keyword="$filterByKeyword"
+                    :before="$filterByBefore"
+                    :after="$filterByAfter"
+                    class="mb-6" />
                 @endif
 
                 <div class="font-base text-sm text-gray-700 dark:text-gray-300">
@@ -23,7 +32,7 @@
                     @endif
                 </div>
                 <div class="mt-4">
-                    {{ $purchases->links() }}
+                    {{ $purchases->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>

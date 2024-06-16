@@ -22,7 +22,7 @@
                     />
             </div>
             <div class="mt-4">
-                {{ $movies->links() }}
+                {{ $movies->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

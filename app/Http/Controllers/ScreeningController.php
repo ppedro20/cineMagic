@@ -94,7 +94,8 @@ class ScreeningController extends \Illuminate\Routing\Controller
         $filterByMovie = $request->query('movie');
         if ($filterByMovie) {
             $screeningsQuery->whereHas('movie', function($query) use ($filterByMovie) {
-                $query->where('title', 'like', "%$filterByMovie%");
+                $query->where('title', 'like', "%$filterByMovie%")
+                ->orWhere('synopsis', 'like', "%$filterByMovie%");
             });
         }
 

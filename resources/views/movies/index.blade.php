@@ -42,7 +42,7 @@
             @endif
             </div>
             <div class="mt-4">
-                {{ $movies->links() }}
+                {{ $movies->appends(request()->query())->links() }}
             </div>
             @empty($movies->items())
                 <div class="col-md-12 text-center my-auto" style="padding-top: 9em; padding-bottom: 9em">

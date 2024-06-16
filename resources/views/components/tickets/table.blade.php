@@ -10,6 +10,7 @@
                     @endif
                 @endisset
                 <th class="px-2 py-2 text-left">Movie</th>
+                <th class="px-2 py-2 text-left">Theater</th>
                 <th class="px-2 py-2 text-left">Poster</th>
                 <th class="px-2 py-2 text-left">Seat</th>
                 <th class="px-2 py-2 text-left">Date</th>
@@ -33,34 +34,30 @@
                     <td class="px-2 py-2 text-left">{{ $ticket->id }}</td>
                     @isset($showCustomers)
                         @if ($showCustomers)
-                            <td class="px-2 py-2 text-left">{{$ticket->purchase->customer_name}}</td>
-                            <td class="px-2 py-2 text-left">{{$ticket->purchase->customer_email}}</td>
+                            <td class="px-2 py-2 text-left">{{ $ticket->purchase->customer_name }}</td>
+                            <td class="px-2 py-2 text-left">{{ $ticket->purchase->customer_email }}</td>
                         @endif
                     @endisset
                     <td class="px-2 py-2 text-left">{{ $ticket->screening->movie->title }}</td>
+                    <td class="px-2 py-2 text-left">{{ $ticket->screening->theater->name }}</td>
                     <td class="px-2 py-2 text-left">
-                        <img class="md h-28" src="{{ $ticket->screening->movie->posterFullUrl }}" alt="Movie Poster" height="100px"/>
+                        <img class="md h-28" src="{{ $ticket->screening->movie->posterFullUrl }}" alt="Movie Poster"
+                            height="100px" />
                     </td>
-                    <td class="px-2 py-2 text-left">{{ $ticket->seat->name}}</td>
+                    <td class="px-2 py-2 text-left">{{ $ticket->seat->name }}</td>
                     <td class="px-2 py-2 text-left">{{ $ticket->screening->date }}</td>
-                    <td class="px-2 py-2 text-left">{{ \Carbon\Carbon::parse($ticket->screening->start_time)->format('H:i')}}</td>
+                    <td class="px-2 py-2 text-left">
+                        {{ \Carbon\Carbon::parse($ticket->screening->start_time)->format('H:i') }}
+                    </td>
                     <td class="px-2 py-2 text-left">{{ $ticket->price }}&#8364;</td>
                     @if ($showStatus)
-                        @if($ticket->isValid)
+                        @if ($ticket->isValid)
                             <th class="px-2 py-2 text-left">
-                                <x-button
-                                    element="a"
-                                    text="Valid"
-                                    type="success"
-                                />
+                                <x-button element="a" text="Valid" type="success" />
                             </th>
                         @else
                             <th class="px-2 py-2 text-left">
-                                <x-button
-                                    element="a"
-                                    text="Invalid"
-                                    type="danger"
-                                />
+                                <x-button element="a" text="Invalid" type="danger" />
                             </th>
                         @endif
                     @endif
@@ -68,7 +65,7 @@
                         @if ($showRemoveFromCart)
                             <td>
                                 <x-table.icon-minus class="px-0.5" method="delete"
-                                    action="{{ route('cart.remove', ['screening' => $ticket->screening,'seat' => $ticket->seat]) }}" />
+                                    action="{{ route('cart.remove', ['screening' => $ticket->screening, 'seat' => $ticket->seat]) }}" />
                             </td>
                         @endif
                     @endisset
@@ -100,5 +97,4 @@
             @endisset
         </tbody>
     </table>
-
 </div>

@@ -28,7 +28,7 @@
                     />
             </div>
             <div class="mt-4">
-                {{ $theaters->links() }}
+                {{ $theaters->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

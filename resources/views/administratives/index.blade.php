@@ -28,7 +28,7 @@
                     />
             </div>
             <div class="mt-4">
-                {{ $administratives->links() }}
+                {{ $administratives->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

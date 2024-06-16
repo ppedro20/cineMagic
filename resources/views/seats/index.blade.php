@@ -29,7 +29,7 @@
                     />
             </div>
             <div class="mt-4">
-                {{ $seats->links() }}
+                {{ $seats->appends(request()->query())->links() }}
             </div>
         </div>
     </div>

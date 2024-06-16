@@ -7,12 +7,15 @@
     <div class="mt-12">
         <div class="flex justify-between space-x-12 items-end">
             <div>
-                <h3 class="mb-4 text-xl">Purchase</h3>
+                <h3 class="mb-4 text-xl">Purchase "{{ $purchase->id }}"</h3>
                 <div class="flex flex-col w-full md:w-1/2 gap-6">
                     <div> Name: {{ $purchase->customer_name }} </div>
                     <div> Email: {{ $purchase->customer_email }} </div>
                     <div> NIF:{{$purchase->nif ?? '-' }} </div>
+
+                    <div> Date:{{$purchase->date}} </div>
                     <div> Payment Type:{{$purchase->payment_type}} </div>
+                    <div> Payment Ref:{{$purchase->payment_ref}} </div>
                 </div>
             </div>
         </div>
@@ -21,6 +24,7 @@
         <thead>
             <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
                 <th class="px-2 py-2 text-left">Ticket</th>
+                <th class="px-2 py-2 text-left">Theater</th>
                 <th class="px-2 py-2 text-left">Movie</th>
                 <th class="px-2 py-2 text-left">Poster</th>
                 <th class="px-2 py-2 text-left">Seat</th>
@@ -33,6 +37,7 @@
             @foreach ($purchase->tickets as $ticket)
                 <tr class="border-b border-b-gray-400 dark:border-b-gray-500">
                     <td class="px-2 py-2 text-left">{{ $ticket->id }}</td>
+                    <td class="px-2 py-2 text-left">{{ $ticket->screening->theater->name }}</td>
                     <td class="px-2 py-2 text-left">{{ $ticket->screening->movie->title }}</td>
                     <td class="px-2 py-2 text-left">
                         <img class="md h-28" src="{{ $ticket->screening->movie->posterFullUrl }}" alt="Movie Poster" height="100px"/>

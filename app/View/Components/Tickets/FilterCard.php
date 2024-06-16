@@ -14,7 +14,11 @@ class FilterCard extends Component
      */
     public function __construct(
         public string $filterAction,
-        public string $resetUrl
+        public string $resetUrl,
+        public bool $showKeyword=false,
+        public ?string $keyword = null,
+        public ?string $movie = null,
+        public ?string $theater = null,
     )
     {
 

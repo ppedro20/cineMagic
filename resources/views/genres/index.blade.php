@@ -28,7 +28,7 @@
                     />
             </div>
             <div class="mt-4">
-                {{ $genres->links() }}
+                {{ $genres->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
