@@ -7,13 +7,14 @@ use App\Http\Controllers\SeatController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TheaterController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ScreeningController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CustomerController;
 
 /* ----- PUBLIC ROUTES ----- */
 Route::view('/', 'home')->name('home');
@@ -70,9 +71,12 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::delete('administratives/{administrative}/photo', [AdministrativeController::class, 'destroyPhoto'])
     ->name('administratives.photo.destroy')
     ->can('update', 'administrative');
-
-    //Admnistrative resource routes are protected by AdministrativePolicy on the controller
     Route::resource('administratives', AdministrativeController::class);
+
+    Route::delete('employees/{employee}/photo', [EmployeeController::class, 'destroyPhoto'])
+    ->name('employees.photo.destroy')
+    ->can('update', 'employee');
+    Route::resource('employees', EmployeeController::class);
 
     Route::resource('customers', CustomerController::class);
 

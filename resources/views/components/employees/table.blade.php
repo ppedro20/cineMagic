@@ -16,16 +16,16 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($administratives as $administrative)
+            @foreach ($employees as $employee)
                 <tr class="border-b border-b-gray-400 dark:border-b-gray-500">
-                    <td class="px-2 py-2 text-left">{{ $administrative->name }}</td>
-                    <td class="px-2 py-2 text-left hidden lg:table-cell">{{ $administrative->email }}</td>
+                    <td class="px-2 py-2 text-left">{{ $employee->name }}</td>
+                    <td class="px-2 py-2 text-left hidden lg:table-cell">{{ $employee->email }}</td>
                     </td>
                     @if ($showView)
                         <td>
-                            @can('view', $administrative)
+                            @can('view', $employee)
                                 <x-table.icon-show class="ps-3 px-0.5"
-                                    href="{{ route('administratives.show', ['administrative' => $administrative]) }}" />
+                                    href="{{ route('employees.show', ['employee' => $employee]) }}" />
                             @else
                                 <x-table.icon-show class="ps-3 px-0.5" :enabled="false" />
                             @endcan
@@ -33,9 +33,9 @@
                     @endif
                     @if ($showEdit)
                         <td>
-                            @can('update', $administrative)
+                            @can('update', $employee)
                                 <x-table.icon-edit class="px-0.5"
-                                    href="{{ route('administratives.edit', ['administrative' => $administrative]) }}" />
+                                    href="{{ route('employees.edit', ['employee' => $employee]) }}" />
                             @else
                                 <x-table.icon-edit class="px-0.5" :enabled="false" />
                             @endcan
@@ -43,9 +43,9 @@
                     @endif
                     @if ($showDelete)
                         <td>
-                            @can('delete', $administrative)
+                            @can('delete', $employee)
                                 <x-table.icon-delete class="px-0.5"
-                                    action="{{ route('administratives.destroy', ['administrative' => $administrative]) }}" />
+                                    action="{{ route('employees.destroy', ['employee' => $employee]) }}" />
                             @else
                                 <x-table.icon-delete class="px-0.5" :enabled="false" />
                             @endcan
