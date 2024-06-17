@@ -94,7 +94,7 @@
                                     </div>
                                 </x-slot>
                                 @if(Auth::user()?->type === 'A')
-                                    <x-menus.submenu-item content="Área de administração" selectable="0"
+                                    <x-menus.submenu-item content="Dashboard" selectable="0"
                                         href="{{ route('dashboard') }}" />
                                 @endif
 

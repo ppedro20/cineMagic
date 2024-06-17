@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SeatController;
+use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TicketController;
@@ -13,9 +14,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ScreeningController;
+use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
-use App\Http\Controllers\StatisticsController;
 
 
 Route::view('/', 'home')->name('home');
@@ -65,7 +66,7 @@ Route::middleware('auth', 'verified')->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
         return view('dashboard');
-       })->middleware(['auth', 'verified'])->name('dashboard');
+       })->middleware(['auth', 'verified', AdminMiddleware::class])->name('dashboard');
 
     // Statistics
     Route::get('/statistics', [StatisticsController::class, 'index'])
@@ -98,15 +99,6 @@ Route::middleware('auth', 'verified')->group(function () {
 
     // Genre
     Route::resource('genres', GenreController::class);
-
-
-
-
-
-
-
-    // Screening
-    Route::resource('screenings', ScreeningController::class)->except(['show']);
 
 
     // Theater

@@ -26,15 +26,22 @@
                                     href="#"
                                     />
                             @else
-                                <x-button
-                                    element="submit"
-                                    :text="$seat->seat_number"
-                                    type="primary"
-                                    form="form_add_cart_{{$seat->name}}"
-                                />
-                                <form id="form_add_cart_{{$seat->name}}" class="hidden" method="POST" action="{{ route('cart.add', ['screening' => $screening, 'seat' => $seat]) }}">
-                                    @csrf
-                                </form>
+                                @if(Auth::User() == null || Auth::User()?->type === 'C')
+                                    <x-button
+                                        element="submit"
+                                        :text="$seat->seat_number"
+                                        type="primary"
+                                        form="form_add_cart_{{$seat->name}}"
+                                    />
+                                    <form id="form_add_cart_{{$seat->name}}" class="hidden" method="POST" action="{{ route('cart.add', ['screening' => $screening, 'seat' => $seat]) }}">
+                                        @csrf
+                                    </form>
+                                @else
+                                    <x-button
+                                        :text="$seat->seat_number"
+                                        type="primary"
+                                    />
+                                @endif
                             @endif
                         </div>
                     </td>

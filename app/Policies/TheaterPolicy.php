@@ -13,7 +13,7 @@ class TheaterPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -21,7 +21,7 @@ class TheaterPolicy
      */
     public function view(User $user, Theater $theater): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -29,7 +29,7 @@ class TheaterPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -37,7 +37,7 @@ class TheaterPolicy
      */
     public function update(User $user, Theater $theater): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -45,7 +45,7 @@ class TheaterPolicy
      */
     public function delete(User $user, Theater $theater): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -53,7 +53,7 @@ class TheaterPolicy
      */
     public function restore(User $user, Theater $theater): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -61,6 +61,6 @@ class TheaterPolicy
      */
     public function forceDelete(User $user, Theater $theater): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 }
