@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SeatController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\MovieController;
@@ -128,13 +129,13 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('tickets/{ticket}',[TicketController::class, 'show'])
         ->name('tickets.show');
 
-    Route::get('tickets/validate/{screening}',[TicketController::class, 'validate'])
+    Route::get('tickets/{screening}/validate/',[TicketController::class, 'validate'])
         ->name('tickets.validate')
         ->middleware([EmployeeMiddleware::class]);
 
-    Route::patch('tickets/updatestatus/{ticket}',[TicketController::class, 'updateStatus'])
+    Route::patch('tickets/{ticket}/updatestatus',[TicketController::class, 'updateStatus'])
         ->name('tickets.updateStatus')
-        ->middleware([EmployeeMiddleware::class]);;
+        ->middleware([EmployeeMiddleware::class]);
 
 
     // Purchase
@@ -152,6 +153,11 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::put('configurations',[ConfigurationController::class, 'update'])
         ->name('configurations.update')
+        ->middleware([AdminMiddleware::class]);
+
+    // User
+    Route::patch('user/{user}',[UserController::class, 'updateBlock'])
+        ->name('user.updateblock')
         ->middleware([AdminMiddleware::class]);
 });
 

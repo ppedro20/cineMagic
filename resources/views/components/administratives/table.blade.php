@@ -4,6 +4,7 @@
             <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
                 <th class="px-2 py-2 text-left">Name</th>
                 <th class="px-2 py-2 text-left hidden lg:table-cell">Email</th>
+                <th></th>
                 @if ($showView)
                     <th></th>
                 @endif
@@ -21,6 +22,17 @@
                     <td class="px-2 py-2 text-left">{{ $administrative->name }}</td>
                     <td class="px-2 py-2 text-left hidden lg:table-cell">{{ $administrative->email }}</td>
                     </td>
+                    @if ($administrative->blocked)
+                        <td>
+                            <x-table.icon-block class="px-0.5"
+                                action="{{ route('user.updateblock', ['user' => $administrative]) }}" />
+                        </td>
+                    @else
+                        <td>
+                        <x-table.icon-unblock class="px-0.5"
+                            action="{{ route('user.updateblock', ['user' => $administrative]) }}" />
+                        </td>
+                    @endif
                     @if ($showView)
                         <td>
                             <x-table.icon-show class="ps-3 px-0.5"

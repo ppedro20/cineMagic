@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -19,8 +20,23 @@ class UserController extends Controller
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
 
-        return redirect()->route('movies.index')
+        return redirect()->route('home')
             ->with('alert-msg', 'A senha foi alterada com sucesso')
+            ->with('alert-type', 'success');
+    }
+
+    public function updateBlock(User $user){
+
+        $user->blocked = !$user->blocked;
+        $user->save();
+        if ($user->blocked){
+            $htmlMessage = "User <u>{$user->name}</u> has been <strong>Blocked</strong> successfully!";
+        }else{
+            $htmlMessage = "User <u>{$user->name}</u> has been <strong>Unblocked</strong> successfully!";
+        }
+
+        return redirect()->back()
+            ->with('alert-msg', $htmlMessage)
             ->with('alert-type', 'success');
     }
 }
