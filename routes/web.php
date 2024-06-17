@@ -10,6 +10,7 @@ use App\Http\Controllers\MovieController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TheaterController;
+use App\Http\Middleware\EmployeeMiddleware;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PurchaseController;
@@ -120,10 +121,12 @@ Route::middleware('auth', 'verified')->group(function () {
         ->name('tickets.show');
 
     Route::get('tickets/validate/{screening}',[TicketController::class, 'validate'])
-        ->name('tickets.validate');
+        ->name('tickets.validate')
+        ->middleware([EmployeeMiddleware::class]);
 
     Route::patch('tickets/updatestatus/{ticket}',[TicketController::class, 'updateStatus'])
-        ->name('tickets.updateStatus');
+        ->name('tickets.updateStatus')
+        ->middleware([EmployeeMiddleware::class]);;
 
 
     // Purchase

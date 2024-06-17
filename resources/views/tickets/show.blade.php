@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends( Auth::user()?->type == 'A' ?'layouts.admin':'layouts.main')
 
 @section('header-title', 'Ticket '.$ticket->id)
 
