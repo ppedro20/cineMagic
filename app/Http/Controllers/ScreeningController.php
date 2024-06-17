@@ -18,6 +18,7 @@ class ScreeningController extends \Illuminate\Routing\Controller
 
     public function __construct()
     {
+        $this->middleware('can:viewAny,App\Models\Movie')->only(['index']);
         $this->middleware('can:create,App\Models\Screening')->only(['create', 'store']);
         $this->middleware('can:update,screening')->only(['edit', 'update']);
         $this->middleware('can:view,screening')->only('show');

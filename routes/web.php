@@ -31,14 +31,14 @@ Route::delete('movies/{movie}/poster', [MovieController::class, 'destroyPoster']
 
 Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
     ->name('movies.showmovies');
-Route::resource('movies', MovieController::class);
+Route::resource('movies', MovieController::class)->only(['show']);
 
 
 // Screening
 Route::get('screenings/showscreenings', [ScreeningController::class, 'showScreenings'])
     ->name('screenings.showscreenings');
 
-Route::resource('screenings', ScreeningController::class);
+Route::resource('screenings', ScreeningController::class)->only(['show']);
 
 
 // Cart
@@ -71,7 +71,8 @@ Route::middleware('auth', 'verified')->group(function () {
 
     // Statistics
     Route::get('/statistics', [StatisticsController::class, 'index'])
-        ->name('statistics.index');
+        ->name('statistics.index')
+        ->middleware([AdminMiddleware::class]);
 
     // Profile
     Route::middleware('auth')->group(function () {
@@ -97,9 +98,16 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::resource('customers', CustomerController::class)->except(['create', 'store']);
 
+    // Movies
+    Route::resource('movies', MovieController::class)->except(['show']);
+
+    // Screenings
+    Route::resource('screenings', ScreeningController::class)->except(['show']);
+
 
     // Genre
-    Route::resource('genres', GenreController::class);
+    Route::resource('genres', GenreController::class)
+        ->middleware([AdminMiddleware::class]);
 
 
     // Theater
@@ -139,10 +147,12 @@ Route::middleware('auth', 'verified')->group(function () {
 
     // Configuration
     Route::get('configurations',[ConfigurationController::class, 'edit'])
-        ->name('configurations.edit');
+        ->name('configurations.edit')
+        ->middleware([AdminMiddleware::class]);
 
     Route::put('configurations',[ConfigurationController::class, 'update'])
-        ->name('configurations.update');
+        ->name('configurations.update')
+        ->middleware([AdminMiddleware::class]);
 });
 
 

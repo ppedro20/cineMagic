@@ -20,6 +20,7 @@ class MovieController extends \Illuminate\Routing\Controller
     public function __construct()
     {
         $this->middleware('can:create,App\Models\Movie')->only(['create', 'store']);
+        $this->middleware('can:viewAny,App\Models\Movie')->only(['index']);
         $this->middleware('can:update,movie')->only(['edit', 'update']);
         $this->middleware('can:delete,movie')->only(['destroy']);
     }
