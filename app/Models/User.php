@@ -52,7 +52,7 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    
+
 
     /**
      * Get the customer associated with the User
@@ -69,7 +69,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->photo_filename && Storage::exists("public/photos/{$this->photo_filename}")) {
             return asset("storage/photos/{$this->photo_filename}");
         } else {
-            return asset("storage/photos/anonymous.jpg");
+            return asset("storage/photos/anonymous.png");
         }
     }
 

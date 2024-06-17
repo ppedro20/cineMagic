@@ -29,7 +29,7 @@ class MoviePolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -37,7 +37,7 @@ class MoviePolicy
      */
     public function update(User $user, Movie $movie): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -45,7 +45,7 @@ class MoviePolicy
      */
     public function delete(User $user, Movie $movie): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -53,7 +53,7 @@ class MoviePolicy
      */
     public function restore(User $user, Movie $movie): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 
     /**
@@ -61,6 +61,6 @@ class MoviePolicy
      */
     public function forceDelete(User $user, Movie $movie): bool
     {
-        return true;
+        return $user->type === 'A';
     }
 }

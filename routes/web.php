@@ -17,15 +17,22 @@ use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\AdministrativeController;
 use App\Http\Controllers\StatisticsController;
 
-/* ----- PUBLIC ROUTES ----- */
+
 Route::view('/', 'home')->name('home');
 
 
 
-// Movie Public
-Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
-    ->name('movies.showmovies');
-Route::resource('movies', MovieController::class)->only(['show']);
+// Movie
+    Route::delete('movies/{movie}/poster', [MovieController::class, 'destroyPoster'])
+        ->name('movies.poster.destroy')
+        ->can('update', 'movie');
+
+    Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
+        ->name('movies.showmovies');
+    Route::resource('movies', MovieController::class);
+
+
+
 
 
 // Screening Public
@@ -97,12 +104,9 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('genres', GenreController::class);
 
 
-    // Movie Private
-    Route::delete('movies/{movie}/poster', [MovieController::class, 'destroyPoster'])
-        ->name('movies.poster.destroy')
-        ->can('update', 'movie');
 
-    Route::resource('movies', MovieController::class)->except(['show']);
+
+
 
 
     // Screening
@@ -148,8 +152,6 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::put('configurations',[ConfigurationController::class, 'update'])
         ->name('configurations.update');
-
-
 });
 
 

@@ -19,7 +19,9 @@ class MovieController extends \Illuminate\Routing\Controller
 
     public function __construct()
     {
-        $this->authorizeResource(Movie::class);
+        $this->middleware('can:create,App\Models\Movie')->only(['create', 'store']);
+        $this->middleware('can:update,movie')->only(['edit', 'update']);
+        $this->middleware('can:delete,movie')->only(['destroy']);
     }
 
     public function index(Request $request): View
@@ -203,6 +205,8 @@ class MovieController extends \Illuminate\Routing\Controller
 
     public function destroyPoster(Movie $movie): RedirectResponse
     {
+        $this->authorize('update', $movie);
+
         if ($movie->poster_filename && Storage::fileExists("public/posters/$movie->poster_filename")) {
             Storage::delete("public/posters/$movie->poster_filename");
 
