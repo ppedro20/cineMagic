@@ -16,7 +16,9 @@ class PurchaseController extends \Illuminate\Routing\Controller
 
     public function __construct()
     {
-        //$this->authorizeResource(Purchase::class);
+        $this->middleware('can:view,purchase')->only('show');
+        $this->middleware('can:viewAny,App\Models\Purchase')->only('index');
+        $this->middleware('can:view,purchase')->only('showReciept');
     }
 
     public function index(Request $request): View

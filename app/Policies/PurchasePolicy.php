@@ -13,7 +13,7 @@ class PurchasePolicy
      */
     public function viewAny(User $user): bool
     {
-        if ($user->type === 'A'){
+        if ($user->type === 'A' || $user->type === 'C'){
             return true;
         }
         return false;
@@ -28,45 +28,5 @@ class PurchasePolicy
             return true;
         }
         return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Purchase $purchase): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Purchase $purchase): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Purchase $purchase): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Purchase $purchase): bool
-    {
-        return true;
     }
 }

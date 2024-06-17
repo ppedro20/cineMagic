@@ -130,9 +130,9 @@ Route::middleware('auth', 'verified')->group(function () {
 
 
     // Purchase
-    Route::resource('purchases',PurchaseController::class)->only(['index', 'show']);
     Route::get('purchases/{purchase}/receipt',[PurchaseController::class, 'showReciept'])
         ->name('purchases.receipt');
+    Route::resource('purchases',PurchaseController::class)->only(['index', 'show']);
     // Pdf
     Route::get('/pdf/{filename}', [PDFController::class, 'showPDF'])
         ->name('pdf.show');
