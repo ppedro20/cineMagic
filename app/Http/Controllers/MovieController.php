@@ -140,7 +140,7 @@ class MovieController extends \Illuminate\Routing\Controller
         $newMovie = DB::transaction(function () use ($validatedData, $request) {
             $newMovie = new Movie();
             $newMovie->title = $validatedData['title'];
-            $newMovie->genre_code = $validatedData['genre_code'];
+            $newMovie->movie_code = $validatedData['movie_code'];
             $newMovie->year = $validatedData['year'];
             $newMovie->synopsis = $validatedData['synopsis'];
 
@@ -171,7 +171,7 @@ class MovieController extends \Illuminate\Routing\Controller
         $validatedData = $request->validated();
         $movie = DB::transaction(function () use ($validatedData, $movie, $request) {
             $movie->title = $validatedData['title'];
-            $movie->genre_code = $validatedData['genre_code'];
+            $movie->movie_code = $validatedData['movie_code'];
             $movie->year = $validatedData['year'];
             $movie->synopsis = $validatedData['synopsis'];
 
@@ -197,12 +197,30 @@ class MovieController extends \Illuminate\Routing\Controller
 
     public function destroy(Movie $movie): RedirectResponse
     {
-        $htmlMessage = "Movie <u>{$movie->title}</u> has been deleted successfully!";
-        $movie->delete();
+        $url = route('movies.show', ['movie' => $movie]);
+
+
+        $totalScreenings = $movie->screenings->count();
+
+        if ($totalScreenings == 0){
+            $movie->delete();
+            $alertType = 'success';
+            $alertMsg = "Movie <u>{$movie->title}</u> has been deleted successfully!";
+        } else {
+            $alertType = 'warning';
+            $justification = match (true) {
+                $totalScreenings <= 0 => "",
+                $totalScreenings == 1 => "there is 1 screening in the movie",
+                $totalScreenings > 1 => "there are $totalScreenings screenings in the movie",
+            };
+            $alertMsg = "Movie <a href='$url'><u>{$movie->title}</u></a> ({$movie->id}) cannot be deleted because $justification.";
+        }
+
         return redirect()->route('movies.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
+            ->with('alert-type', $alertType)
+            ->with('alert-msg', $alertMsg);
     }
+
 
     public function destroyPoster(Movie $movie): RedirectResponse
     {
