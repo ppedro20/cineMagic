@@ -100,11 +100,13 @@
 
                                 @auth
                                     <hr>
-                                    <x-menus.submenu-item content="Profile" selectable="0" :href="match (Auth::user()->type) {
-                                        'A' => route('administratives.show', ['administrative' => Auth::user()]),
-                                        'E' => route('employees.show', ['employee' => Auth::user()]),
-                                        'C' => route('customers.show', ['customer' => Auth::user()])
-                                    }" />
+                                    @if(Auth::user()?->type === 'A' || Auth::user()?->type === 'C' )
+                                        <x-menus.submenu-item content="Profile" selectable="0" :href="match (Auth::user()->type) {
+                                            'A' => route('administratives.show', ['administrative' => Auth::user()]),
+                                            'E' => '#',
+                                            'C' => route('customers.show', ['customer' => Auth::user()])
+                                        }" />
+                                    @endif
                                     <x-menus.submenu-item content="Change Password" selectable="0"
                                         href="{{ route('profile.edit.password') }}" />
                                 @endauth

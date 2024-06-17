@@ -5,18 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Mail\PurchaseReceipt;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Response;
 
 class PDFController extends Controller
 {
-
     public static function generatePDF(Purchase $purchase): String {
         $pdf = Pdf::loadView('pdf.receipt', ['purchase' => $purchase]);
 
         $receipt_filename = $purchase->id . '.pdf';
         Storage::put("pdf_purchases/$receipt_filename", $pdf->output());
+        $path = storage_path("/app/pdf_purchases/$receipt_filename");
+        Mail::to($purchase->customer_email)->send(new PurchaseReceipt($purchase, $receipt_filename));
 
         return $receipt_filename;
     }

@@ -90,14 +90,15 @@ Route::middleware('auth', 'verified')->group(function () {
 
     // Employee
     Route::delete('employees/{employee}/photo', [EmployeeController::class, 'destroyPhoto'])
-    ->name('employees.photo.destroy');
-    Route::resource('employees', EmployeeController::class);
+    ->name('employees.photo.destroy')->middleware([AdminMiddleware::class]);
+    Route::resource('employees', EmployeeController::class)->middleware([AdminMiddleware::class]);
 
     // Customer
     Route::delete('customers/{customer}/photo', [CustomerController::class, 'destroyPhoto'])
-    ->name('customers.photo.destroy');
+        ->name('customers.photo.destroy');
 
-    Route::resource('customers', CustomerController::class)->except(['create', 'store']);
+    Route::resource('customers', CustomerController::class)
+        ->except(['create', 'store']);
 
     // Movies
     Route::resource('movies', MovieController::class)->except(['show']);
