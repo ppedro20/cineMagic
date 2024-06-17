@@ -41,7 +41,6 @@
                 <div class="mt-6 space-y-4">
                     @include('movies.shared.fields', ['mode' => 'show', 'listGenres' => $movie->genre->pluck('name', 'code')->toArray()])
                 </div>
-                @can('viewAny', App\Models\Screening::class)
                     <h3 class="pt-16 pb-4 text-2xl font-medium text-gray-900 dark:text-gray-100">
                         Screenings
                     </h3>
@@ -52,7 +51,6 @@
                         :showDelete="false"
                         class="pt-4"
                         />
-                @endcan
             </section>
         </div>
     </div>

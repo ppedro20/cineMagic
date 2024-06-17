@@ -18,14 +18,15 @@ class ScreeningController extends \Illuminate\Routing\Controller
 
     public function __construct()
     {
-        //$this->authorizeResource(Screening::class);
+        $this->middleware('can:create,App\Models\Screening')->only(['create', 'store']);
+        $this->middleware('can:update,screening')->only(['edit', 'update']);
+        $this->middleware('can:view,screening')->only('show');
+        $this->middleware('can:delete,screening')->only(['destroy']);
     }
 
     public function index(Request $request): View
     {
-        $screeningsQuery = Screening::query()
-            ->orderBy('date')
-            ->orderBy('start_time');
+        $screeningsQuery = Screening::query();
 
         $filterByMovie = $request->query('movie');
         if ($filterByMovie) {
@@ -54,6 +55,8 @@ class ScreeningController extends \Illuminate\Routing\Controller
         $screenings = $screeningsQuery
             ->with('movie')
             ->with('theater')
+            ->orderBy('date','desc')
+            ->orderBy('start_time','desc')
             ->paginate(20)
             ->withQueryString();
 
@@ -155,7 +158,7 @@ class ScreeningController extends \Illuminate\Routing\Controller
         //TODO
         $NewScreening = Screening::create($request->validated());
         $url = route('screenings.show', ['screening' => $NewScreening]);
-        $htmlMessage = "Screening <a href='$url'><u>{$NewScreening->name}</u></a> has been created successfully!";
+        $htmlMessage = "Screening <a href='$url'><u>{$NewScreening->id}</u></a> has been created successfully!";
         return redirect()->route('screenings.index')
         ->with('alert-type', 'success')
         ->with('alert-msg', $htmlMessage);
@@ -181,7 +184,7 @@ class ScreeningController extends \Illuminate\Routing\Controller
     {
         $screening->update($request->validated());
         $url = route('screenings.show', ['screening' => $screening]);
-        $htmlMessage = "Screening <a href='$url'><u>{$screening->name}</u></a> has been updated successfully!";
+        $htmlMessage = "Screening <a href='$url'><u>{$screening->id}</u></a> has been updated successfully!";
         return redirect()->route('screenings.index')
             ->with('alert-type', 'success')
             ->with('alert-msg', $htmlMessage);
@@ -195,31 +198,26 @@ class ScreeningController extends \Illuminate\Routing\Controller
     {
         try {
             $url = route('screenings.show', ['screening' => $screening]);
-            $totalScreenings = $screening->screenings()->count();
+            $totalTickets = $screening->tickets->count();
 
-            if ($totalScreenings == 0) {
-                $screeningSeats = $screening->seats;
-                foreach ($screeningSeats as $seat) {
-                    $seat->delete();
-                }
-
+            if ($totalTickets == 0) {
                 $screening->delete();
                 $alertType = 'success';
-                $alertMsg = "Screening {$screening->name} has been deleted successfully!";
+                $alertMsg = "Screening {$screening->id} has been deleted successfully!";
             } else {
                 $alertType = 'warning';
                 $justification = match (true) {
-                    $totalScreenings <= 0 => "",
-                    $totalScreenings == 1 => "there is 1 screening enrolled in it",
-                    $totalScreenings > 1 => "there are $totalScreenings screening enrolled in it",
+                    $totalTickets <= 0 => "",
+                    $totalTickets == 1 => "there is 1 ticket enrolled in it",
+                    $totalTickets > 1 => "there are $totalTickets tickets enrolled in it",
                 };
 
-                $alertMsg = "Screening <a href='$url'><u>{$screening->name}</u></a> cannot be deleted because $justification.";
+                $alertMsg = "Screening <a href='$url'><u>{$screening->id}</u></a> cannot be deleted because $justification.";
             }
         } catch (\Exception $error) {
             $alertType = 'danger';
             $alertMsg = "It was not possible to delete the screening
-                            <a href='$url'><u>{$screening->name}</u></a>
+                            <a href='$url'><u>{$screening->id}</u></a>
                             because there was an error with the operation!";
         }
         return redirect()->route('screenings.index')

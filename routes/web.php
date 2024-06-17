@@ -23,24 +23,20 @@ Route::view('/', 'home')->name('home');
 
 
 // Movie
-    Route::delete('movies/{movie}/poster', [MovieController::class, 'destroyPoster'])
-        ->name('movies.poster.destroy')
-        ->can('update', 'movie');
+Route::delete('movies/{movie}/poster', [MovieController::class, 'destroyPoster'])
+    ->name('movies.poster.destroy')
+    ->can('update', 'movie');
 
-    Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
-        ->name('movies.showmovies');
-    Route::resource('movies', MovieController::class);
-
-
+Route::get('movies/showmovies', [MovieController::class, 'showMovies'])
+    ->name('movies.showmovies');
+Route::resource('movies', MovieController::class);
 
 
-
-// Screening Public
+// Screening
 Route::get('screenings/showscreenings', [ScreeningController::class, 'showScreenings'])
     ->name('screenings.showscreenings');
 
-Route::get('screenings/show/{screening}',[ScreeningController::class, 'show'])
-    ->name('screenings.show');
+Route::resource('screenings', ScreeningController::class);
 
 
 // Cart
