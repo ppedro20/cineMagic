@@ -93,7 +93,7 @@
                                         {{ Auth::user()->name }}
                                     </div>
                                 </x-slot>
-                                @if(Auth::user()?->type != 'C')
+                                @if(Auth::user()?->type === 'A')
                                     <x-menus.submenu-item content="Área de administração" selectable="0"
                                         href="{{ route('dashboard') }}" />
                                 @endif
@@ -101,9 +101,9 @@
                                 @auth
                                     <hr>
                                     <x-menus.submenu-item content="Profile" selectable="0" :href="match (Auth::user()->type) {
-                                        'A' => route('administratives.edit', ['administrative' => Auth::user()]),
-                                        'E' => route('employees.edit', ['employee' => Auth::user()]),
-                                        'C' => route('customers.edit', ['customer' => Auth::user()])
+                                        'A' => route('administratives.show', ['administrative' => Auth::user()]),
+                                        'E' => route('employees.show', ['employee' => Auth::user()]),
+                                        'C' => route('customers.show', ['customer' => Auth::user()])
                                     }" />
                                     <x-menus.submenu-item content="Change Password" selectable="0"
                                         href="{{ route('profile.edit.password') }}" />

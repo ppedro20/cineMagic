@@ -127,6 +127,13 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('tickets/{ticket}',[TicketController::class, 'show'])
         ->name('tickets.show');
 
+    Route::get('tickets/validate/{screening}',[TicketController::class, 'validate'])
+        ->name('tickets.validate');
+
+    Route::patch('tickets/updatestatus/{ticket}',[TicketController::class, 'updateStatus'])
+        ->name('tickets.updateStatus');
+
+
     // Purchase
     Route::resource('purchases',PurchaseController::class)->only(['index', 'show']);
     Route::get('purchases/{purchase}/receipt',[PurchaseController::class, 'showReciept'])

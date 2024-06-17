@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends(Auth::User()?->type !== 'A' ? 'layouts.main' : 'layouts.admin')
 
 @section('header-title', 'Employee "' . $employee->name . '"')
 
@@ -8,22 +8,24 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
-                    <x-button
-                        href="{{ route('employees.create') }}"
-                        text="New"
-                        type="success"/>
-                    <x-button
+                     <x-button
                         href="{{ route('employees.show', ['employee' => $employee]) }}"
                         text="View"
                         type="info"/>
-                    <form method="POST" action="{{ route('employees.destroy', ['employee' => $employee]) }}">
-                        @csrf
-                        @method('DELETE')
+                    @if (Auth::User()?->type === 'A')
                         <x-button
-                            element="submit"
-                            text="Delete"
-                            type="danger"/>
-                    </form>
+                            href="{{ route('employees.create') }}"
+                            text="New"
+                            type="success"/>
+                        <form method="POST" action="{{ route('employees.destroy', ['employee' => $employee]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <x-button
+                                element="submit"
+                                text="Delete"
+                                type="danger"/>
+                        </form>
+                    @endif
                 </div>
                 <header>
                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">

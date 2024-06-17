@@ -1,4 +1,4 @@
-@extends(Auth::user()?->type !== 'A'? 'layouts.main':'layouts.admin')
+@extends(Auth::User()?->type !== 'A' ? 'layouts.main' : 'layouts.admin')
 
 @section('header-title', 'Customer "' . $customer->name . '"')
 
@@ -8,12 +8,11 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
-                    @if (Auth::user()?->type === 'A')
-                        <x-button
-                            href="{{ route('customers.show', ['customer' => $customer]) }}"
-                            text="View"
-                            type="info"/>
-
+                    <x-button
+                        href="{{ route('customers.show', ['customer' => $customer]) }}"
+                        text="View"
+                        type="info"/>
+                    @if (Auth::User()?->type === 'A')
                         <form method="POST" action="{{ route('customers.destroy', ['customer' => $customer]) }}">
                             @csrf
                             @method('DELETE')

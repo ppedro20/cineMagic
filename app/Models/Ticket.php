@@ -52,7 +52,7 @@ class Ticket extends Model
         return $this->belongsTo(Screening::class);
     }
 
-    public function getisValidAttribute()
+    public function getIsValidAttribute()
     {
         return $this->status == 'valid';
     }

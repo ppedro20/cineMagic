@@ -21,12 +21,22 @@ class TicketPolicy
      */
     public function view(User $user, Ticket $ticket): bool
     {
-        if ($user->type === 'A' || $user->id === $ticket->purchase->customer_id){
+        if ($user->type === 'A' || $user->type === 'E' || $user->id === $ticket->purchase->customer_id){
             return true;
         }
         return false;
     }
 
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function validate(User $user): bool
+    {
+        if ($user->type === 'E'){
+            return true;
+        }
+        return false;
+    }
     /**
      * Determine whether the user can create models.
      */

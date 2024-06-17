@@ -8,6 +8,12 @@
         <div class="max-full">
             <section>
                 <div class="flex flex-wrap justify-end items-center gap-4 mb-4">
+                    @can('validate', App\Models\Ticket::class)
+                        <x-button
+                            href="{{ route('tickets.validate', ['screening' => $screening]) }}"
+                            text="ACCESS CONTROL"
+                            type="warning"/>
+                    @endcan
                     @can('create', App\Models\Screening::class)
                         <x-button
                             href="{{ route('screenings.create') }}"

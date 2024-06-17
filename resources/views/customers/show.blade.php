@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends(Auth::User()?->type !== 'A' ? 'layouts.main' : 'layouts.admin')
 
 @section('header-title', 'Customer "' . $customer->name . '"')
 
@@ -12,15 +12,16 @@
                         href="{{ route('customers.edit', ['customer' => $customer]) }}"
                         text="Edit"
                         type="primary"/>
-
-                    <form method="POST" action="{{ route('customers.destroy', ['customer' => $customer]) }}">
-                        @csrf
-                        @method('DELETE')
-                        <x-button
-                            element="submit"
-                            text="Delete"
-                            type="danger"/>
-                    </form>
+                    @if (Auth::User()?->type === 'A')
+                        <form method="POST" action="{{ route('customers.destroy', ['customer' => $customer]) }}">
+                            @csrf
+                            @method('DELETE')
+                            <x-button
+                                element="submit"
+                                text="Delete"
+                                type="danger"/>
+                        </form>
+                    @endif
 
                 </div>
                 <header>

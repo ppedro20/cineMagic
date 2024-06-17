@@ -15,6 +15,16 @@
                 <div class="mt-6 space-y-4">
                     <div class="grow mt-6 space-y-4">
                         <div class="flex gap-4">
+                            @can('validate', App\Models\Ticket::class)
+                                <form method="POST" id="update_status" action="{{ route('tickets.updateStatus', ['ticket' => $ticket]) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <x-button
+                                        element="submit"
+                                        text="Change Status"
+                                        type="warning"/>
+                                </form>
+                            @endcan
                             <div class="flex flex-col w-full md:w-1/2 gap-6">
                                 <x-field.input name="movie" label="Movie" width="full" :readonly="true"
                                     value="{{ old('movie', $ticket->screening->movie->title) }}" />
